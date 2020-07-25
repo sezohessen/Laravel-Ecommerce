@@ -20,7 +20,7 @@ class ProductController extends Controller
     {
         $users = User::all();
         $categories = Category::all();
-        $products = Product::all();
+        $products = Product::all()->sortByDesc("id");
         $product_picture= product_picture::all();
         return view('admin.products.index',compact('categories','users','products','product_picture'));
     }
@@ -57,9 +57,9 @@ class ProductController extends Controller
         {
            foreach($request->file('picture') as $image)
            {
-                $featrued_new_name = time().rand(11111,99999).$image->getClientOriginalName(); 
+                $featrued_new_name = time().rand(11111,99999).$image->getClientOriginalName();
                 $image->move('uploads/products/',$featrued_new_name);
-                $data_img[] = $featrued_new_name;  
+                $data_img[] = $featrued_new_name;
            }
         }
         $product = Product::create([
@@ -80,7 +80,7 @@ class ProductController extends Controller
             ]);
         }
 
-        session()->flash('status', 'The Product has been Created!'); 
+        session()->flash('status', 'The Product has been Created!');
         return redirect()->route('products');
     }
     public function CreateOrIgnore($table,$request,$name)
@@ -160,14 +160,14 @@ class ProductController extends Controller
         $this->CreateOrIgnore($product,$request->weight,'weight');
         $this->CreateOrIgnore($product,$request->inStock,'inStock');
 
-        session()->flash('status', 'The product has been updated!'); 
+        session()->flash('status', 'The product has been updated!');
         return redirect()->route('products');
     }
     public function handleUploadedImage($image,$product)
     {
         if (!is_null($image)) {
             $featrued = $image;
-            $featrued_new_name = time().rand(11111,99999).$featrued->getClientOriginalName(); 
+            $featrued_new_name = time().rand(11111,99999).$featrued->getClientOriginalName();
             $featrued->move('uploads/products/',$featrued_new_name);
             //Delete Old Images (Not Complelte )
             $oldRows =  product_picture::where('product_id', $product->id);
@@ -192,7 +192,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $product->delete($id);
-        session()->flash('status', 'The product has been deleted!'); 
+        session()->flash('status', 'The product has been deleted!');
         return redirect()->route('products');
     }
     public function activation($id)

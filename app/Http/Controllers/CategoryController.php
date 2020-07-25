@@ -16,7 +16,7 @@ class CategoryController extends Controller
     public function index()
     {
         $users = User::all();
-        $categories = Category::all();
+        $categories = Category::all()->sortByDesc("id");
         $products = Product::all();
         return view('admin.categories.index',compact('categories','users','products'));
     }
@@ -46,7 +46,7 @@ class CategoryController extends Controller
             'picture.*'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         $featrued = $request->picture;
-        $featrued_new_name = time().rand(11111,99999).$featrued->getClientOriginalName(); 
+        $featrued_new_name = time().rand(11111,99999).$featrued->getClientOriginalName();
         $featrued->move('uploads/categories/',$featrued_new_name);
         $post = Category::create([
             'name'          =>  $request->name,
@@ -54,7 +54,7 @@ class CategoryController extends Controller
             'picture'       =>  $featrued_new_name,
             'active'        =>  1,
         ]);
-        session()->flash('status', 'The Category has been Created!'); 
+        session()->flash('status', 'The Category has been Created!');
         return redirect()->route('categories');
     }
 
@@ -106,14 +106,14 @@ class CategoryController extends Controller
         $category->description =   $request->description;
 
         $category->save();
-        session()->flash('status', 'The Category has been updated!'); 
+        session()->flash('status', 'The Category has been updated!');
         return redirect()->route('categories');
     }
     public function handleUploadedImage($request,$image,$category)
     {
         if (!is_null($image)) {
             $featrued = $request->picture;
-            $featrued_new_name = time().rand(11111,99999).$featrued->getClientOriginalName(); 
+            $featrued_new_name = time().rand(11111,99999).$featrued->getClientOriginalName();
             $featrued->move('uploads/categories/',$featrued_new_name);
             $category->picture = $featrued_new_name;
         }
@@ -139,7 +139,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->delete($id);
-        session()->flash('status', 'The Category has been Destroyed!'); 
+        session()->flash('status', 'The Category has been Destroyed!');
         return redirect()->route('categories');
     }
 }
