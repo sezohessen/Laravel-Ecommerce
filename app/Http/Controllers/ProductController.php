@@ -143,8 +143,9 @@ class ProductController extends Controller
         ]);
 
         if($request->has('picture')){
-            foreach( $request->file('picture') as $product_picture){
-                $this->handleUploadedImage($product_picture,$product);
+            foreach( $request->file('picture') as $key=> $product_picture){
+                $this->handleUploadedImage($product_picture,$product,$key);
+
             }
         }
 
@@ -163,24 +164,24 @@ class ProductController extends Controller
         session()->flash('status', 'The product has been updated!');
         return redirect()->route('products');
     }
-    public function handleUploadedImage($image,$product)
+    public function handleUploadedImage($image,$product,$key)
     {
-        if (!is_null($image)) {
-            $featrued = $image;
-            $featrued_new_name = time().rand(11111,99999).$featrued->getClientOriginalName();
-            $featrued->move('uploads/products/',$featrued_new_name);
-            //Delete Old Images (Not Complelte )
+        $featrued = $image;
+        $featrued_new_name = time().rand(11111,99999).$featrued->getClientOriginalName();
+        $featrued->move('uploads/products/',$featrued_new_name);
+        if($key==0){
+            //Delete Old Images On Update
             $oldRows =  product_picture::where('product_id', $product->id);
             foreach( $oldRows as $oldRow){
                 File::delete('uploads/products/'.$oldRow->picture);
             }
             $oldRows->delete();
-            // Update Info Product_picture Table
-            $product_image = product_picture::create([
-                'product_id'    =>$product->id,
-                'picture'       =>$featrued_new_name
-            ]);
         }
+        // Update Info Product_picture Table
+        $product_image = product_picture::create([
+            'product_id'    =>$product->id,
+            'picture'       =>$featrued_new_name
+        ]);
     }
     /**
      * Remove the specified resource from storage.

@@ -13,34 +13,35 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
-{   
+{
 
     public function __construct() {
         $this->middleware('owner');
     }
 
     public function index()
-    {   
+    {
         $auth_id = Auth::user()->id;
         $users = User::where('admin', 1)->whereNotIn('id', [$auth_id] )->orderBy('id', 'desc')->paginate(15);
         return view('admin.admins.index', ['users' => $users]);
     }
 
     public function create()
-    {   
+    {
         return view('admin.admins.create');
     }
 
     public function store(UserRequest $request, User $model)
-    {   
+    {
 
-        $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
+        $model->create($request->merge(['password' => Hash::make($request->get('password')),
+                                        'admin' => 1])->all());
 
         return redirect()->route('admins.index')->withStatus(__('Admin successfully created.'));
     }
 
     public function edit(User $admin)
-    {   
+    {
         return view('admin.admins.edit', compact('admin'));
     }
 

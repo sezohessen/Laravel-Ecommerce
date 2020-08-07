@@ -11,10 +11,10 @@ use App\Http\Controllers\Controller;
 use App\Product;
 use Illuminate\Http\Request;
 class UserController extends Controller
-{   
+{
 
     public function index(User $model)
-    {   
+    {
         $users = User::all();
         $categories = Category::all();
         $products = Product::all();
@@ -28,7 +28,8 @@ class UserController extends Controller
 
     public function store(UserRequest $request, User $model)
     {
-        $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
+        $model->create($request->merge(['password' => Hash::make($request->get('password')),
+                                        'admin' => 0])->all());
         return redirect()->route('users.index')->withStatus(__('User successfully created.'));
     }
 

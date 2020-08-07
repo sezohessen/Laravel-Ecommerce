@@ -20,10 +20,13 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('main', 'HomeController@index')->name('Ecommerce');
+Route::get('main/shop', 'HomeController@shop')->name('shop');
+Route::get('main/shop/{id}/{slug}', 'HomeController@SpecificCateg')->name('shop.category');
 
 
-// Admin Routes 
+
+// Admin Routes
 
 Route::group(['middleware' => ['auth', 'admin'] ], function () {
 
@@ -38,9 +41,9 @@ Route::group(['middleware' => ['auth', 'admin'] ], function () {
 	Route::resource('admin/users', 'Admin\UserController', ['except' => ['show']]);
 
 	Route::get('admin/profile', ['as' => 'profile.edit', 'uses' => 'Admin\ProfileController@edit']);
-	
+
 	Route::put('admin/profile', ['as' => 'profile.update', 'uses' => 'Admin\ProfileController@update']);
-	
+
 	Route::put('admin/profile/password', ['as' => 'profile.password', 'uses' => 'Admin\ProfileController@password']);
 	/* Category Controller */
 	Route::get('admin/categries', 'CategoryController@index')->name('categories');

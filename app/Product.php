@@ -19,4 +19,9 @@ class Product extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public static function active()
+    {
+        return self::where('active', 1);
+    }
 }
