@@ -350,11 +350,12 @@
 						<div class="row">
                             @foreach ($products as $product)
                                 <!-- Product -->
+
                                 <div class="col">
                                     <div class="product type-product">
                                         <div class="woocommerce-LoopProduct-link">
                                             <div class="product-image">
-                                                <a href="#" class="wp-post-image">
+                                                <a href="{{route('shop.product',['id' => $product->id ,'slug' => str_slug($product->name)])}}" class="wp-post-image">
                                                     <img class="image-cover" src="{{asset('uploads/products/'.$product->pictures[0]->picture)}}" alt="{{$product->name}}">
                                                     @if (isset($product->pictures[1]->picture))
                                                         <img class="image-secondary" src="{{asset('uploads/products/'.$product->pictures[1]->picture)}}" alt="{{$product->name}}">
@@ -378,7 +379,11 @@
                                                         <img src="images/icons/shopping-cart-black-icon.png" alt="cart">
                                                     </a>
                                                 </div>
-                                                <h5 class="woocommerce-loop-product__title"><a href="#">{{$product->name}}</a></h5>
+                                                <h5 class="woocommerce-loop-product__title">
+                                                    <a href="{{route('shop.product',['id' => $product->id ,'slug' => str_slug($product->name)])}}">
+                                                        {{$product->name}}
+                                                    </a>
+                                                </h5>
                                                 <span class="price">
                                                     @if ($product->discount!=0||$product->discount!=NULL)
                                                         <del>
@@ -406,6 +411,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             @endforeach
 						</div>
 					</div>

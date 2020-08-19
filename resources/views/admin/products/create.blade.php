@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => __('Add Product')])
 
 @section('content')
-    @include('admin.users.partials.header', ['title' => __('Add Product')])   
+    @include('admin.users.partials.header', ['title' => __('Add Product')])
 
     <div class="container-fluid mt--7">
         <div class="row">
@@ -45,7 +45,7 @@
                                                 <option value="{{$category->id}}">{{$category->name}}</option>
                                             @endforeach
                                         </select>
-                                        
+
                                     </div>
                                   </div>
                                 <div class="form-group row required">
@@ -103,14 +103,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group row required">
-                                    <label for="picture" class="col-2 col-form-label">Photo(up to 4)</label>
+                                    <label for="picture" class="col-2 col-form-label">Photo(up to 3)</label>
                                     <div class="col-4">
                                     <input type="file" name="picture[]"  multiple required>
                                     @if ($errors->has('picture'))
-                                    <small class="badge badge-danger">{{$errors->first('picture','The image is required and must be less or equal 4 images.')}}</small>
+                                    <small class="badge badge-danger">{{$errors->first('picture','The image is required and must be less or equal 3 images.')}}</small>
                                     @endif
                                     </div>
-                                </div>  
+                                </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success mt-4">{{ __('Add') }}</button>
                                 </div>
@@ -120,7 +120,7 @@
                 </div>
             </div>
         </div>
-        
+
         @include('layouts.footers.auth')
     </div>
 @endsection

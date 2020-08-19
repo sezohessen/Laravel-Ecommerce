@@ -12,4 +12,9 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public static function active()
+    {
+        return self::where('active', 1);
+    }
 }

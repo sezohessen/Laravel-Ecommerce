@@ -80,6 +80,7 @@
 <!--  JS  -->
 <!-- Jquery -->
 <script src="{{asset('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')}}"></script>
+<script data-cfasync="false" src="{{asset('/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js')}}"></script>
 <!-- Bootstrap -->
 <script src="{{asset('vendor/bootrap/js/bootstrap.min.js')}}"></script>
 <!-- Waypoints Library -->

@@ -23,6 +23,8 @@ Auth::routes();
 Route::get('main', 'HomeController@index')->name('Ecommerce');
 Route::get('main/shop', 'HomeController@shop')->name('shop');
 Route::get('main/shop/{id}/{slug}', 'HomeController@SpecificCateg')->name('shop.category');
+Route::get('main/shop/product/{id}/{slug}', 'HomeController@product')->name('shop.product');
+Route::post('main/shop/product/{id}/{slug}', 'CommentController@store')->name('product.comment');
 
 
 

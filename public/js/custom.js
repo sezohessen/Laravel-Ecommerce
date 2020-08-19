@@ -5,7 +5,7 @@
         $('.images-preloader').fadeOut();
         });
     /* End Images Loader*/
-    /*Save Data Select Option*/
+    /*Save Data Select Option
     var input = document.getElementById('SaveSelectionOrder');
     if (localStorage['SaveSelectionOrder']) {
         input.value = localStorage['SaveSelectionOrder'];
@@ -16,7 +16,7 @@
     $('.Category_name').click(function(){
         localStorage['SaveSelectionOrder'] = 'newest';
     });
-    /*Save Data Select Option*/
+    Save Data Select Option*/
     /*Add class current in menu*/
     $('ul .menu-item a').on('click',function() {
         $('.menu-item a').removeClass("current");

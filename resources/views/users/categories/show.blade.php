@@ -49,8 +49,8 @@
 							<div class="widget-area">
 								<!-- Search -->
 								<div class="widget widget_search">
-                                <form class="search-form" method="get" role="search">
-                                    <input type="text" hidden name="order" value="{{app('request')->input('order')}}">
+                                    <form class="search-form" method="get" role="search">
+                                        <input type="text" hidden name="order" value="{{app('request')->input('order')}}">
 										<input type="search" name="search" class="search-field" placeholder="Search..." value="{{ app('request')->input('search') }}">
 										<button class="search-submit" type="submit">
 											<i class="zmdi zmdi-search"></i>
@@ -104,6 +104,7 @@
 						</div>
 						<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
 							<div class="content-area">
+                                @if ($products->count())
 								<div class="storefront-sorting">
 									<p class="woocommerce-result-count">Showing 1 – {{$products->count()}} of {{$all_product->count()}} results</p>
                                     <form class="woocommerce-ordering" method="get">
@@ -117,7 +118,7 @@
 										</select>
                                         <button class="btn btn-dark">GO ></button>
 									</form>
-								</div>
+                                </div>
 								<div class="row">
                                     @foreach ($products as $product)
                                     <!-- Product -->
@@ -125,7 +126,7 @@
                                         <div class="product type-product">
                                             <div class="woocommerce-LoopProduct-link">
                                                 <div class="product-image">
-                                                    <a href="#" class="wp-post-image">
+                                                    <a href="{{route('shop.product',['id' => $product->id ,'slug' => str_slug($product->name)])}}" class="wp-post-image">
                                                         <img class="image-cover" src="{{asset('uploads/products/'.$product->pictures[0]->picture)}}" alt="{{$product->name}}">
                                                         @if (isset($product->pictures[1]->picture))
                                                             <img class="image-secondary" src="{{asset('uploads/products/'.$product->pictures[1]->picture)}}" alt="{{$product->name}}">
@@ -149,7 +150,11 @@
                                                             <img src="{{asset('images/icons/shopping-cart-black-icon.png')}}" alt="cart">
                                                         </a>
                                                     </div>
-                                                    <h5 class="woocommerce-loop-product__title"><a href="#">{{$product->name}}</a></h5>
+                                                    <h5 class="woocommerce-loop-product__title">
+                                                        <a href="{{route('shop.product',['id' => $product->id ,'slug' => str_slug($product->name)])}}">
+                                                            {{$product->name}}
+                                                        </a>
+                                                    </h5>
                                                     <span class="price">
                                                         @if ($product->discount!=0||$product->discount!=NULL)
                                                             <del>
@@ -178,8 +183,11 @@
                                         </div>
                                     </div>
                                 @endforeach
-								</div>
-							</div>
+                                </div>
+                                @else
+                                    <h1><strong>No Products to show</strong></h1>
+                                @endif
+                            </div>
 							<div class="navigation pagination">
 								<div class="page-numbers">
                                     {{ $products->appends(Request::only(['search', 'order', 'page']))->links() }}
@@ -193,9 +201,4 @@
 		</section>
 		<!-- End Shop Section -->
     </div>
-    <script>
-        $('.Category_name').click(function(){
-        localStorage['SaveSelectionOrder'] = 'newest';
-        });
-    </script>
  @include('users.layouts.footer.footer')

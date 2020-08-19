@@ -341,6 +341,46 @@ ul {
     .breadcrumb-section .breadcrumb-inner .breadcrumbs .breadcrumbs-1:hover {
       color: #333; }
 
+
+/*New*/
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+
+/*New*/
 /* Back To Top Button */
 #back-to-top {
   color: #333;
@@ -7751,7 +7791,6 @@ textarea:-moz-placeholder {
     -webkit-flex-direction: column;
     -o-flex-direction: column;
     -ms-flex-direction: column; }
-
   /* Shop Single v2 */
   .shop-single-v1-section.shop-single-v2-section .woocommerce .woocommerce-product-gallery .owl-carousel .owl-thumbs .owl-thumb-item {
     width: 55px; } }
