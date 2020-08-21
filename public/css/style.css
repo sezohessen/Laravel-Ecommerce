@@ -349,8 +349,7 @@ ul {
     padding: 0 10px;
 }
 .rate:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
+    display: contents;
 }
 .rate:not(:checked) > label {
     float:right;
@@ -379,7 +378,10 @@ ul {
     color: #c59b08;
 }
 
-
+.shop-star-rating{
+    display: inline-block;
+    color: #ffcc33;
+}
 /*New*/
 /* Back To Top Button */
 #back-to-top {

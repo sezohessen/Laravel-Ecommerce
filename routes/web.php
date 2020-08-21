@@ -65,6 +65,10 @@ Route::group(['middleware' => ['auth', 'admin'] ], function () {
 	Route::post('admin/products/update/{id}', 'ProductController@update')->name('products.update');
 	Route::get('admin/products/activation/{id}', 'ProductController@activation')->name('products.activation');
 	Route::get('admin/products/availability/{id}', 'ProductController@availability')->name('products.availability');
-	Route::get('admin/products/destroy/{id}', 'ProductController@destroy')->name('products.destroy');
+    Route::get('admin/products/destroy/{id}', 'ProductController@destroy')->name('products.destroy');
+    /* Comment Controller */
+    Route::get('admin/comments', 'CommentController@index')->name('comments');
+    Route::get('admin/comments/product/{id}', 'CommentController@productComment')->name('comments.product');
+    Route::get('admin/comments/destroy/{id}', 'CommentController@destroy')->name('comment.destroy');
 });
 

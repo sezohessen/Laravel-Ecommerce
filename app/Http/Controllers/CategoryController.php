@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\User;
 use App\Category;
+use App\Comment;
 use App\Product;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -15,10 +16,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users      = User::all();
         $categories = Category::all()->sortByDesc("id");
-        $products = Product::all();
-        return view('admin.categories.index',compact('categories','users','products'));
+        $products   = Product::all();
+        $comments   = Comment::all();
+        return view('admin.categories.index',compact('categories','users','products','comments'));
     }
 
     /**
@@ -67,11 +69,13 @@ class CategoryController extends Controller
     public function show($id)
     {
         $categories = Category::all();
-        $category = Category::find($id);
-        $products = Product::where('category_id', $id)
+        $comments   = Comment::all();
+        $category   = Category::find($id);
+        $products   = Product::where('category_id', $id)
         ->orderBy('id', 'desc')
         ->get();
-        return view('admin.categories.show',compact('category','categories','products'));
+
+        return view('admin.categories.show',compact('category','categories','products','comments'));
     }
 
     /**

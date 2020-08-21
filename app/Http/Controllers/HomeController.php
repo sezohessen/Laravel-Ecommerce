@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Comment;
 use App\Product;
 use App\product_picture;
 use App\User;
@@ -163,11 +164,20 @@ class HomeController extends Controller
         $product_pictures = product_picture::where('product_id', $id)
         ->orderBy('id', 'desc')
         ->get();
-        $products           = Product::active()
+        $products       = Product::active()
         ->where('category_id',$product->category->id)
+        ->where('id','!=',$id)
         ->orderBy('created_at', 'desc')
         ->take(8)
         ->get();
-        return view('users.product.show',compact('categories','product','product_pictures','products'));
+        $comments       = Comment::where('product_id',$id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+        $avr_star       = Comment::where('product_id',$id)->selectRaw('SUM(rate)/COUNT(user_id) AS avg_rating')
+        ->first()
+        ->avg_rating;
+        $product_star = round($avr_star);
+        return view('users.product.show',compact('categories','product','product_pictures','products',
+        'comments','avr_star','product_star'));
     }
 }

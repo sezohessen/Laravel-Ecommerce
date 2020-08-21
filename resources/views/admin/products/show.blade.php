@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => __('product')])
 
 @section('content')
-    @include('admin.users.partials.header', ['title' => __('Products')])   
+    @include('admin.users.partials.header', ['title' => __('Products')])
 
     <div class="container-fluid mt--7">
         <div class="row">
@@ -27,18 +27,25 @@
                                                 alt="Card image cap" width="100%" height="500px">
                                                 <hr>
                                             </div>
-                                        @else 
+                                        @else
                                             <div class="col-4">
                                                 <img src="{{asset('uploads/products/'.$product_picture->picture)}}"
                                                 alt="Card image cap" width="100%">
-                                            </div>                                                                  
-                                        @endif                                                             
+                                            </div>
+                                        @endif
                                 @endforeach
                             </div>
                             <div class="card-body">
                                 <h1 class="card-title">{{$product->name}}</h1>
                                 <h3 class="red">Price : <span>{{$product->price}}$</span> </h3>
                                 <strong class="red">Quantity : <span>{{$product->quantity}} pieces</span> </strong>
+                                <h3 class="red">Comments :
+                                    @if ($comment->count())
+                                        <a href="{{ route('comments.product',['id' => $product->id]) }}">{{ $comment->count() }}</a>
+                                    @else
+                                        No Comment Yet
+                                    @endif
+                                </h3>
                                 <hr>
                                 <p class="card-text">{{$product->description}}</p>
                                 <hr>
@@ -65,7 +72,7 @@
                 </div>
             </div>
         </div>
-        
+
         @include('layouts.footers.auth')
     </div>
 @endsection

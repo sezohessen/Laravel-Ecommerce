@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Comment;
+use App\Product;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -15,7 +18,14 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        $users          = User::all();
+        $categories     = Category::all();
+        $products       = Product::all();
+        $comments       = Comment::all()
+        ->sortByDesc('created_at');
+        /* You could still use sortBy (at the collection level) instead of orderBy
+        (at the query level) if you still want to use all() since it returns a collection of objects. */
+        return view('admin.comments.index',compact('users','categories','products','comments'));
     }
 
     /**
@@ -37,7 +47,7 @@ class CommentController extends Controller
     public function store(Request $request,$id)
     {
         $this->validate($request,[
-            'comment' =>'required',
+            'comment' =>'required|min:3|max:1000',
             'rate' =>'required',
         ]);
         $post = Comment::create([
@@ -60,7 +70,18 @@ class CommentController extends Controller
     {
         //
     }
-
+    public function productComment($id)
+    {
+        $users          = User::all();
+        $categories     = Category::all();
+        $products       = Product::all();
+        $comments       = Comment::where('product_id',$id)
+        ->get();
+        $product_info   = Product::find($id);
+        $allComments    = Comment::all();
+        return view('admin.comments.index',compact('comments','product_info','users','categories','products',
+            'allComments'));
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -82,6 +103,7 @@ class CommentController extends Controller
     public function update(Request $request, $id)
     {
         //
+
     }
 
     /**
@@ -92,6 +114,9 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment    = Comment::find($id);
+        $comment->delete($id);
+        session()->flash('status', 'The comment has been deleted!');
+        return redirect()->back();
     }
 }

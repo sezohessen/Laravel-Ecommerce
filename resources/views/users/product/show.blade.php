@@ -40,14 +40,21 @@
 								<div class="summary entry-summary">
 									<h1 class="product_title entry-title">{{ $product->name }}</h1>
 									<div class="woocommerce-product-rating">
-										<div class="star-rating">
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star-outline"></i>
-										</div>
-										<a href="#" class="woocommerce-review-link">(2 customer review)</a>
+                                        @if ($product_star!=0)
+                                            <div class="star-rating">
+                                                @for ($i = 1; $i <=  5; $i++)
+                                                    @if ($product_star>=$i)
+                                                        <i class="zmdi zmdi-star"></i>
+                                                    @else
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                    @endif
+                                                @endfor
+                                            </div>
+                                            <a href="#" class="woocommerce-review-link">( {{ number_format($avr_star,1) }} of  {{ $comments->count() }} customer review)</a>
+                                        @else
+                                            <strong>No reviews Yet</strong>
+                                        @endif
+
 									</div>
 									<p class="price">
                                         @if ($product->discount!=0||$product->discount!=NULL)
@@ -117,7 +124,17 @@
 										<a href="#"><i class="zmdi zmdi-tumblr"></i></a>
 										<a href="#"><i class="zmdi zmdi-instagram"></i></a>
 									</div>
-								</div>
+                                </div>
+                                <div class="col-12">
+                                    @if (session('status'))
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            {{ session('status') }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
 								<div class="woocommerce-tabs">
 									<ul class="nav nav-tabs wc-tabs" id="myTab" role="tablist">
 										<li class="nav-item description_tab" id="tab-title-description" role="tab" aria-controls="tab-description" aria-selected="true">
@@ -127,7 +144,7 @@
 									    	<a class="nav-link" href="#tab-additional_information" data-toggle="tab">Additional information</a>
 									  	</li>
 										<li class="nav-item reviews_tab" id="tab-title-reviews" role="tab" aria-controls="tab-reviews" aria-selected="false">
-									    	<a class="nav-link" href="#tab-reviews" data-toggle="tab">Reviews(2)</a>
+									    	<a class="nav-link" href="#tab-reviews" data-toggle="tab">Reviews({{ $comments->count() }})</a>
 									  	</li>
 									</ul>
 									<div class="tab-content" id="myTabContent">
@@ -154,47 +171,34 @@
 										</div>
 										<div class="woocommerce-Tabs-panel tab-pane" id="tab-reviews" role="tabpanel" aria-labelledby="tab-title-reviews">
 											<div class="woocommerce-Reviews" id="reviews">
-												<h2>2 review for Reframe Your Viewpoints</h2>
+												<h2>{{ $comments->count() }} review for Reframe Your Viewpoints</h2>
 												<div id="comments">
 													<div class="comment-list">
-														<div class="comment-item">
-															<div class="comment-content">
-																<img src="{{asset('images/shop-single-v1-4.jpg')}}" alt="customer">
-																<div class="comment-body">
-																	<div class="comment-author">
-																		<span class="author">Emily Valdez</span>
-																		<div class="star-rating">
-																			<i class="zmdi zmdi-star"></i>
-																			<i class="zmdi zmdi-star"></i>
-																			<i class="zmdi zmdi-star"></i>
-																			<i class="zmdi zmdi-star"></i>
-																			<i class="zmdi zmdi-star-outline"></i>
-																		</div>
-																	</div>
-																	<span class="comment-time">March 28, 2020</span>
-																	<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was.</p>
-																</div>
-															</div>
-														</div>
-														<div class="comment-item">
-															<div class="comment-content">
-																<img src="{{asset('images/shop-single-v1-5.jpg')}}" alt="customer">
-																<div class="comment-body">
-																	<div class="comment-author">
-																		<span class="author">Emma Hayes</span>
-																		<div class="star-rating">
-																			<i class="zmdi zmdi-star"></i>
-																			<i class="zmdi zmdi-star"></i>
-																			<i class="zmdi zmdi-star"></i>
-																			<i class="zmdi zmdi-star"></i>
-																			<i class="zmdi zmdi-star"></i>
-																		</div>
-																	</div>
-																	<span class="comment-time">March 28, 2020</span>
-																	<p>Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain.</p>
-																</div>
-															</div>
-														</div>
+                                                        @foreach ($comments as $comment)
+                                                            <div class="comment-item">
+                                                                <div class="comment-content">
+                                                                    <img src="{{asset('images/shop-single-v1-4.jpg')}}" alt="customer">
+                                                                    <div class="comment-body">
+                                                                        <div class="comment-author">
+                                                                            <span class="author">{{ $comment->user->name }}</span>
+                                                                            <div class="star-rating">
+                                                                                {{-- Warning genius Trick ;) --}}
+                                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                                    @if ($comment->rate >= $i)
+                                                                                        <i class="zmdi zmdi-star"></i>
+                                                                                    @else
+                                                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                                                    @endif
+                                                                                @endfor
+                                                                                {{-- Warning genius Trick ;) --}}
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="comment-time">{{ $comment->created_at->format('F j, Y') }}</span>
+                                                                        <p>{{ $comment->comment }}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
 													</div>
 												</div>
 												<div id="review_form_wrapper">
@@ -204,16 +208,6 @@
                                                             action="{{ route('product.comment',['id'=>$product->id, 'slug' => str_slug($product->name)] ) }}"
                                                             method="POST">
                                                                 @csrf
-                                                                <div class="col-12">
-                                                                    @if (session('status'))
-                                                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                                            {{ session('status') }}
-                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                    @endif
-                                                                </div>
 																<p class="comment-notes">
 																	<span>Add a review</span>
 																	<span id="email-notes">
@@ -256,68 +250,93 @@
 						<div class="related">
 							<h2 class="special-heading">Related Products</h2>
 							<div class="owl-carousel owl-theme" id="related-products">
-                                @foreach ($products as $product)
-                                    <div class="item">
-                                        <div class="product type-product">
-                                            <div class="woocommerce-LoopProduct-link">
-                                                <div class="product-image">
-                                                    <a href="{{route('shop.product',['id' => $product->id ,'slug' => str_slug($product->name)])}}" class="wp-post-image">
-                                                        <img class="image-cover" src="{{asset('uploads/products/'.$product->pictures[0]->picture)}}" alt="{{$product->name}}">
-                                                        @if (isset($product->pictures[1]->picture))
-                                                            <img class="image-secondary" src="{{asset('uploads/products/'.$product->pictures[1]->picture)}}" alt="{{$product->name}}">
+                                @if ($products->count())
+                                    @foreach ($products as $product)
+                                        <div class="item">
+                                            <div class="product type-product">
+                                                <div class="woocommerce-LoopProduct-link">
+                                                    <div class="product-image">
+                                                        <a href="{{route('shop.product',['id' => $product->id ,'slug' => str_slug($product->name)])}}" class="wp-post-image">
+                                                            <img class="image-cover" src="{{asset('uploads/products/'.$product->pictures[0]->picture)}}" alt="{{$product->name}}">
+                                                            @if (isset($product->pictures[1]->picture))
+                                                                <img class="image-secondary" src="{{asset('uploads/products/'.$product->pictures[1]->picture)}}" alt="{{$product->name}}">
+                                                            @endif
+                                                        </a>
+                                                        @if ($product->inStock==0||$product->inStock==NULL)
+                                                            <a href="#" class="onsale">
+                                                                Sale
+                                                            </a>
                                                         @endif
-                                                    </a>
-                                                    @if ($product->inStock==0||$product->inStock==NULL)
-                                                        <a href="#" class="onsale">
-                                                            Sale
-                                                        </a>
-                                                    @endif
-                                                    @if ($product->discount!=0||$product->discount!=NULL)
-                                                        <a href="#" class="onnew" style="top: 50px">{{$product->discount}}%</a>
-                                                    @endif
-                                                    <div class="yith-wcwl-add-button show">
-                                                        <a href="#" class="add_to_wishlist">
-                                                            <i class="zmdi zmdi-favorite-outline"></i>
-                                                        </a>
-                                                    </div>
-                                                    <div class="button add_to_cart_button">
-                                                        <a href="#">
-                                                            <img src="{{asset('images/icons/shopping-cart-black-icon.png')}}" alt="cart">
-                                                        </a>
-                                                    </div>
-                                                    <h5 class="woocommerce-loop-product__title">
-                                                        <a href="{{route('shop.product',['id' => $product->id ,'slug' => str_slug($product->name)])}}">
-                                                            {{$product->name}}
-                                                        </a>
-                                                    </h5>
-                                                    <span class="price">
                                                         @if ($product->discount!=0||$product->discount!=NULL)
-                                                            <del>
-                                                                <span class="woocommerce-Price-amount amount">
-                                                                    <span class="woocommerce-Price-currencySymbol">$</span>
-                                                                    {{$product->price}}
-                                                                </span>
-                                                            </del>
-                                                            <ins>
-                                                                <span class="woocommerce-Price-amount amount">
-                                                                    <span class="woocommerce-Price-currencySymbol">$</span>
-                                                                    {{$product->price - (($product->price * $product->discount)/100)}}
-                                                                </span>
-                                                            </ins>
-                                                        @else
-                                                            <ins>
-                                                                <span class="woocommerce-Price-amount amount">
-                                                                    <span class="woocommerce-Price-currencySymbol">$</span>
-                                                                    {{$product->price}}
-                                                                </span>
-                                                            </ins>
+                                                            <a href="#" class="onnew" style="top: 50px">{{$product->discount}}%</a>
                                                         @endif
-                                                    </span>
+                                                        <div class="yith-wcwl-add-button show">
+                                                            <a href="#" class="add_to_wishlist">
+                                                                <i class="zmdi zmdi-favorite-outline"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="button add_to_cart_button">
+                                                            <a href="#">
+                                                                <img src="{{asset('images/icons/shopping-cart-black-icon.png')}}" alt="cart">
+                                                            </a>
+                                                        </div>
+                                                        <h5 class="woocommerce-loop-product__title">
+                                                            <a href="{{route('shop.product',['id' => $product->id ,'slug' => str_slug($product->name)])}}">
+                                                                {{$product->name}}
+                                                            </a>
+                                                        </h5>
+                                                        <span class="price">
+                                                            @if ($product->discount!=0||$product->discount!=NULL)
+                                                                <del>
+                                                                    <span class="woocommerce-Price-amount amount">
+                                                                        <span class="woocommerce-Price-currencySymbol">$</span>
+                                                                        {{$product->price}}
+                                                                    </span>
+                                                                </del>
+                                                                <ins>
+                                                                    <span class="woocommerce-Price-amount amount">
+                                                                        <span class="woocommerce-Price-currencySymbol">$</span>
+                                                                        {{$product->price - (($product->price * $product->discount)/100)}}
+                                                                    </span>
+                                                                </ins>
+                                                            @else
+                                                                <ins>
+                                                                    <span class="woocommerce-Price-amount amount">
+                                                                        <span class="woocommerce-Price-currencySymbol">$</span>
+                                                                        {{$product->price}}
+                                                                    </span>
+                                                                </ins>
+                                                            @endif
+                                                            {{-- Select Depend on Product id --}}
+
+                                                            <?php
+                                                                $avr_star       = App\Comment::where('product_id',$product->id)
+                                                                ->selectRaw('SUM(rate)/COUNT(user_id) AS avg_rating')
+                                                                ->first()
+                                                                ->avg_rating;
+                                                                $product_star = round($avr_star);
+                                                            ?>
+                                                            {{-- Select Depend on Product id --}}
+                                                            @if ($product_star!=0)
+                                                                <div class="shop-star-rating">
+                                                                    @for ($i = 1; $i <=  5; $i++)
+                                                                        @if ($product_star>=$i)
+                                                                            <i class="zmdi zmdi-star"></i>
+                                                                        @else
+                                                                            <i class="zmdi zmdi-star-outline"></i>
+                                                                        @endif
+                                                                    @endfor
+                                                                </div>
+                                                            @endif
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                @else
+                                    <h4>There are not related <strong>products</strong></h4>
+                                @endif
 							</div>
 						</div>
 					</div>

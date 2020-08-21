@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\User;
 use App\Category;
+use App\Comment;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,7 +19,8 @@ class UserController extends Controller
         $users = User::all();
         $categories = Category::all();
         $products = Product::all();
-        return view('admin.users.index', compact('users','categories','products'));
+        $comments = Comment::all();
+        return view('admin.users.index', compact('users','categories','products','comments'));
     }
 
     public function create()

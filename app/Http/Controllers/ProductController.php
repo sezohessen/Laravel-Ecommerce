@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use App\Category;
+use App\Comment;
 use App\Product;
 use App\product_picture;
 use App\User;
@@ -20,9 +21,10 @@ class ProductController extends Controller
     {
         $users = User::all();
         $categories = Category::all();
+        $comments   = Comment::all();
         $products = Product::all()->sortByDesc("id");
         $product_picture= product_picture::all();
-        return view('admin.products.index',compact('categories','users','products','product_picture'));
+        return view('admin.products.index',compact('categories','users','products','product_picture','comments'));
     }
 
     /**
@@ -102,11 +104,13 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
-        $product_pictures = product_picture::where('product_id', $id)
+        $product            = Product::find($id);
+        $comment            = Comment::where('product_id',$id)
+        ->get();
+        $product_pictures   = product_picture::where('product_id', $id)
         ->orderBy('id', 'desc')
         ->get();
-        return view('admin.products.show',compact('product','product_pictures'));
+        return view('admin.products.show',compact('product','product_pictures','comment'));
     }
 
     /**

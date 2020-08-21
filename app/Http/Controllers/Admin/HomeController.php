@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Comment;
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\User;
@@ -29,6 +30,7 @@ class HomeController extends Controller
         $users = User::all();
         $categories = Category::all();
         $products = Product::all();
-        return view('admin.dashboard',compact('users','categories','products'));
+        $comments = Comment::all();
+        return view('admin.dashboard',compact('users','categories','products','comments'));
     }
 }

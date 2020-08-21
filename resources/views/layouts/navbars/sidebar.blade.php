@@ -148,6 +148,11 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">
+                        <i class="ni ni-pin-3 text-orange"></i> {{ __('Comments') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
                         <i class="ni ni-pin-3 text-orange"></i> {{ __('ORDERS') }}
                     </a>
                 </li>

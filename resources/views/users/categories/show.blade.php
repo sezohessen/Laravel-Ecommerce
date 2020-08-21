@@ -177,6 +177,27 @@
                                                                 </span>
                                                             </ins>
                                                         @endif
+                                                        {{-- Select Depend on Product id --}}
+
+                                                        <?php
+                                                            $avr_star       = App\Comment::where('product_id',$product->id)
+                                                            ->selectRaw('SUM(rate)/COUNT(user_id) AS avg_rating')
+                                                            ->first()
+                                                            ->avg_rating;
+                                                            $product_star = round($avr_star);
+                                                        ?>
+                                                        {{-- Select Depend on Product id --}}
+                                                        @if ($product_star!=0)
+                                                            <div class="shop-star-rating">
+                                                                @for ($i = 1; $i <=  5; $i++)
+                                                                    @if ($product_star>=$i)
+                                                                        <i class="zmdi zmdi-star"></i>
+                                                                    @else
+                                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                                    @endif
+                                                                @endfor
+                                                            </div>
+                                                        @endif
                                                     </span>
                                                 </div>
                                             </div>
