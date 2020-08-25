@@ -267,14 +267,19 @@
 							<!-- Cart -->
 							<div class="site-header-cart">
 								<div class="cart-contents">
-									<img src="{{asset('images/icons/header-icon-2.png')}}" alt="cart">
+                                    <span>
+                                        @if ((session('cart')))
+                                            {{ count((array) session('cart')) }}
+                                        @endif
+                                    </span>
+                                    <img src="{{asset('images/icons/shopping-cart-black-icon.png')}}" alt="cart">
 								</div>
 								<div class="widget_shopping_cart">
 									<div class="widget_shopping_cart_content">
 										<ul class="woocommerce-mini-cart cart_list product_list_widget ">
 											<li class="woocommerce-mini-cart-item mini_cart_item clearfix">
 												<a class="product-image" href="#">
-													<img src="{{asset('images/hp-1-drop-cart-1.png')}}" alt="cart-1">
+                                                    <img src="{{asset('images/hp-1-drop-cart-1.png')}}" alt="cart-1">
 												</a>
 												<a class="product-title" href="#">Low Table/Stool</a>
 												<span class="quantity">

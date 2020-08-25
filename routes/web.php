@@ -19,15 +19,20 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-
 Route::get('main', 'HomeController@index')->name('Ecommerce');
 Route::get('main/shop', 'HomeController@shop')->name('shop');
 Route::get('main/shop/{id}/{slug}', 'HomeController@SpecificCateg')->name('shop.category');
 Route::get('main/shop/product/{id}/{slug}', 'HomeController@product')->name('shop.product');
+
 Route::post('main/shop/product/{id}/{slug}', 'CommentController@store')->name('product.comment');
 
-
-
+Route::get('main/shop/cart', 'CartController@index')->name('shop.cart');
+Route::post('main/shop/cart/add/{id}', 'CartController@store')->name('cart.add');
+Route::get('main/shop/cart/remove/{id}', 'CartController@remove')->name('cart.remove');
+Route::post('main/shop/cart/update/{id}', 'CartController@update')->name('cart.update');
+Route::get('main/shop/check-out', 'CartController@checkOut')->name('cart.checkOut');
+Route::post('main/shop/check-out/placeOrder', 'CartController@placeOrder')->name('cart.placeOrder');
+Route::get('main/shop/trackOrder', 'CartController@trackOrder')->name('cart.tracking');
 // Admin Routes
 
 Route::group(['middleware' => ['auth', 'admin'] ], function () {

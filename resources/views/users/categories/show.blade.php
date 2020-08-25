@@ -140,11 +140,17 @@
                                                     @if ($product->discount!=0||$product->discount!=NULL)
                                                         <a href="#" class="onnew" style="top: 50px">{{$product->discount}}%</a>
                                                     @endif
-                                                    <div class="yith-wcwl-add-button show">
-                                                        <a href="#" class="add_to_wishlist">
-                                                            <i class="zmdi zmdi-favorite-outline"></i>
-                                                        </a>
-                                                    </div>
+                                                    @if ($product->inStock!=0||$product->inStock!=NULL)
+                                                        <form method="POST" action="{{ route('cart.add',['id' => $product->id]) }}">
+                                                            @csrf
+                                                            <input type="number" name="quantity" id="quantity" value="1" hidden>
+                                                            <div class="yith-wcwl-add-button show">
+                                                                <button  class="add_to_wishlist btn btn-defaul">
+                                                                    <i class="zmdi zmdi-favorite-outline"></i>
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    @endif
                                                     <div class="button add_to_cart_button">
                                                         <a href="#">
                                                             <img src="{{asset('images/icons/shopping-cart-black-icon.png')}}" alt="cart">

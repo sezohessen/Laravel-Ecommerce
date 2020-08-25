@@ -44,8 +44,8 @@ class CategoryController extends Controller
         $this->validate($request,[
             'name'         =>  'required',
             'description'  =>  'required|max:255',
-            'picture'      => 'required',
-            'picture.*'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'picture'      =>  'required',
+            'picture.*'    =>  'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         $featrued = $request->picture;
         $featrued_new_name = time().rand(11111,99999).$featrued->getClientOriginalName();

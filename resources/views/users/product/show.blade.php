@@ -1,3 +1,4 @@
+
 @include('users.layouts.header.header')
 	<div class="page-content">
 		<!-- Breadcrumb Section -->
@@ -86,13 +87,14 @@
                                     @if ($product->inStock==0||$product->inStock==NULL)
                                             <strong class="bg-danger text-white" style="padding:5px;display:inline-block;margin:10px 0px">Sold Out</strong>
                                     @else
-                                        <form class="cart" method="post">
+                                        <form class="cart" method="POST" action="{{ route('cart.add',['id' => $product->id]) }}">
+                                            @csrf
                                             <div class="quantity">
                                                 <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $product->inStock }}" class="nput-text qty text">
                                                 <span class="modify-qty plus" onclick="Increase()">+</span>
                                                 <span class="modify-qty minus" onclick="Decrease()">-</span>
                                             </div>
-                                            <button type="submit" name="add-to-cart" class="single_add_to_cart_button button alt au-btn btn-small">Add to cart<i class="zmdi zmdi-arrow-right"></i></button>
+                                            <button type="submit" class="single_add_to_cart_button button alt au-btn btn-small">Add to cart<i class="zmdi zmdi-arrow-right"></i></button>
                                         </form>
                                     @endif
 

@@ -19,10 +19,6 @@ class Product extends Model
     {
         return $this->hasMany(product_picture::class);
     }
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
     public function comments()
     {
         return $this->hasMany(Comment::class);
