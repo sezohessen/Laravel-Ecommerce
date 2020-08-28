@@ -19,6 +19,14 @@
 		<section class="shop-single-v1-section section-box featured-hp-1 featured-hp-4">
 			<div class="woocommerce">
 				<div class="container">
+                    @if (session('danger'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('danger') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @endif
 					<div class="content-area">
 						<div class="row">
 							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
@@ -36,7 +44,7 @@
                                         @endforeach
 									</div>
 								</div>
-							</div>
+                            </div>
 							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
 								<div class="summary entry-summary">
 									<h1 class="product_title entry-title">{{ $product->name }}</h1>

@@ -30,9 +30,6 @@ Route::get('main/shop/cart', 'CartController@index')->name('shop.cart');
 Route::post('main/shop/cart/add/{id}', 'CartController@store')->name('cart.add');
 Route::get('main/shop/cart/remove/{id}', 'CartController@remove')->name('cart.remove');
 Route::post('main/shop/cart/update/{id}', 'CartController@update')->name('cart.update');
-Route::get('main/shop/check-out', 'CartController@checkOut')->name('cart.checkOut');
-Route::post('main/shop/check-out/placeOrder', 'CartController@placeOrder')->name('cart.placeOrder');
-Route::get('main/shop/trackOrder', 'CartController@trackOrder')->name('cart.tracking');
 // Admin Routes
 
 Route::group(['middleware' => ['auth', 'admin'] ], function () {
@@ -40,7 +37,7 @@ Route::group(['middleware' => ['auth', 'admin'] ], function () {
 	Route::get('admin', function() {
 		return redirect('admin/dashboard');
 	});
-	/* Admin Controller */
+    /* Admin Controller */
 	Route::get('admin/dashboard', 'Admin\HomeController@index')->name('home');
 
 	Route::resource('admin/admins', 'Admin\AdminController', ['except' => ['show']]);
@@ -75,5 +72,9 @@ Route::group(['middleware' => ['auth', 'admin'] ], function () {
     Route::get('admin/comments', 'CommentController@index')->name('comments');
     Route::get('admin/comments/product/{id}', 'CommentController@productComment')->name('comments.product');
     Route::get('admin/comments/destroy/{id}', 'CommentController@destroy')->name('comment.destroy');
+    /* Website */
+    Route::get('main/shop/check-out', 'CartController@checkOut')->name('cart.checkOut');
+    Route::post('main/shop/check-out/placeOrder', 'CartController@placeOrder')->name('cart.placeOrder');
+    Route::get('main/shop/trackOrder', 'CartController@trackOrder')->name('cart.tracking');
 });
 

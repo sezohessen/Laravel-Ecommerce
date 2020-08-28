@@ -41,19 +41,29 @@
 										<tbody>
                                             <?php $total = 0 ?>
                                             @foreach(session('cart') as $id => $cart_info)
-                                            <?php $total += $cart_info['price'] * $cart_info['quantity'] ?>
+                                            <?php $product = App\Product::find($id);?>
+                                            @if (!$product)
+                                                <?php
+                                                if(isset($cart[$id])) {
+                                                    unset($cart_info[$id]);
+                                                    session()->put('cart', $cart);
+                                                }
+                                                ?>
+                                                @continue
+                                            @endif
+                                            <?php $total += $product->price * $cart_info['quantity'] ?>
                                                 <tr class="cart_item">
                                                     <td class="product-name">
-                                                        <img src="{{ asset('uploads/products/'.$cart_info['photo']) }}" alt="product">
+                                                        <img src="{{ asset('uploads/products/'.$product->pictures[0]->picture) }}" alt="product">
                                                         <div class="review-wrap">
-                                                            <span class="cart_item_title">{{ $cart_info['name'] }}</span>
-                                                            <span class="product-quantity">x{{ $cart_info['productQuantity'] }}</span>
+                                                            <span class="cart_item_title">{{ $product->name }}</span>
+                                                            <span class="product-quantity">x{{ $product->quantity }}</span>
                                                         </div>
                                                     </td>
                                                     <td class="product-total">
                                                         <span class="woocommerce-Price-amount amount">
                                                             <span class="woocommerce-Price-currencySymbol">
-                                                                ${{  $cart_info['price'] * $cart_info['quantity'] }}
+                                                                ${{  $product->price * $cart_info['quantity'] }}
                                                             </span>
                                                         </span>
                                                     </td>

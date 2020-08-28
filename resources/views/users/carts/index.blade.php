@@ -14,7 +14,7 @@
 			</div>
         </section>
 		<!-- End Breadcrumb Section -->
-
+    
         <!-- Shop Cart Section -->
     @if(session('cart'))
 		<section class="shop-cart-section section-box">
@@ -24,6 +24,22 @@
                         @if (session('status'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             {{ session('status') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        @endif
+                        @if (session('notfound'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('notfound') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        @endif
+                        @if (session('leakquantity'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('leakquantity') }}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -52,8 +68,17 @@
 								<tbody>
                                 <?php $total = 0 ?>
                                     @foreach(session('cart') as $id => $cart_info)
-
-                                    <?php $total += $cart_info['price'] * $cart_info['quantity'] ?>
+                                    <?php $product = App\Product::find($id);?>
+                                        @if (!$product)
+                                            <?php
+                                            if(isset($cart_info[$id])) {
+                                                unset($cart_info[$id]);
+                                                session()->put('cart', $cart_info);
+                                            }
+                                            ?>
+                                            @continue
+                                        @endif
+                                    <?php $total += $product->price * $cart_info['quantity'] ?>
 									<tr class="woocommerce-cart-form__cart-item cart_item">
 										<td class="product-remove">
                                             <a href="{{ route('cart.remove',['id'=>$id]) }}" class="remove">
@@ -61,17 +86,17 @@
                                             </a>
 										</td>
 										<td class="product-name" data-title="Product">
-                                            <a href="{{ route('shop.product',['id' =>$id ,'slug' =>str_slug($cart_info['name'])]) }}">
-                                                <img src="{{ asset('uploads/products/'.$cart_info['photo']) }}" alt="product">
+                                            <a href="{{ route('shop.product',['id' =>$id ,'slug' =>str_slug($product->name)]) }}">
+                                                <img src="{{ asset('uploads/products/'.$product->pictures[0]->picture) }}" alt="product">
                                             </a>
-                                            <a href="{{ route('shop.product',['id' =>$id ,'slug' =>str_slug($cart_info['name'])]) }}">
-                                                {{ $cart_info['name'] }}  x{{ $cart_info['productQuantity'] }}
+                                            <a href="{{ route('shop.product',['id' =>$id ,'slug' =>str_slug($product->name)]) }}">
+                                                {{ $product->name }}  x{{ $product->quantity }}
                                             </a>
 										</td>
 										<td class="product-price" data-title="Price">
 											<span class="woocommerce-Price-amount amount">
 												<span class="woocommerce-Price-currencySymbol">$</span>
-												{{ $cart_info['price'] }}
+												{{ $product->price }}
 											</span>
 										</td>
 										<td class="product-quantity" data-title="Quantity">
@@ -80,7 +105,7 @@
                                                     @csrf
                                                     <select class="custom-select mr-sm-2" onchange="this.form.submit()"
                                                     name="quantity"  style="cursor: pointer" >
-                                                        @for ($i = 1; $i <= $cart_info['inStock']; $i++)
+                                                        @for ($i = 1; $i <= $product->inStock; $i++)
                                                             @if ($cart_info['quantity']==$i)
                                                                 <option value="{{ $i }}" selected>{{ $i }}</option>
                                                             @else
@@ -94,7 +119,7 @@
 										<td class="product-subtotal" data-title="Total">
 											<span class="woocommerce-Price-amount amount">
 												<span class="woocommerce-Price-currencySymbol">$</span>
-												{{  $cart_info['price'] * $cart_info['quantity'] }}
+												{{  $product->price * $cart_info['quantity'] }}
 											</span>
 										</td>
                                     </tr>
@@ -183,6 +208,14 @@
 			</div>
         </section>
     @else
+    @if (session('not_available'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('not_available') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    @endif
     <div class="text-center" style="margin: 100px auto">
         <h4>There is not cart items to show </h4>
         <a href="{{ route('shop') }}"> <button class="btn btn-primary">Back To Shopping</button></a>

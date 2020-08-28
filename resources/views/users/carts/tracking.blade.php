@@ -4,7 +4,8 @@
 		<section class="coming-soon-page" style="background-image: url({{ asset('images/coming-soon-bg.jpg') }})">
 			<div class="page-detail">
 				<div class="page-inner">
-					<h1>Tracking</h1>
+                    <h1>Tracking</h1>
+                    @if ($orders->count())
 					<div id="clock"></div>
 					<div class="container">
                         <div class="row">
@@ -44,6 +45,12 @@
                             @endforeach
                         </div>
                       </div>
+                    @else
+                        <div class="text-center" style="margin: 100px auto">
+                            <h4>There is not orders to show </h4>
+                            <a href="{{ route('shop') }}"> <button class="btn btn-primary">Back To Shopping</button></a>
+                        </div>
+                    @endif
 				</div>
 			</div>
 		</section>

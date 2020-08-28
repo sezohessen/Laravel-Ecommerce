@@ -196,6 +196,11 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
+        $cart = session()->get('cart');
+        if(isset($cart[$id])) {
+            unset($cart[$id]);
+            session()->put('cart', $cart);
+        }
         $product->delete($id);
         session()->flash('status', 'The product has been deleted!');
         return redirect()->route('products');

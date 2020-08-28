@@ -23,11 +23,13 @@ class CartController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $categories = Category::all();
-        $products = Product::all();
-        $comments = Comment::all();
-        return view('users.carts.index',compact('users','categories','products','comments'));
+        $categories         = Category::active()
+        ->orderBy('created_at', 'desc')
+        ->whereHas('products', function ($query) {
+            return $query->where('active', 1);
+        })
+        ->get();
+        return view('users.carts.index',compact('categories'));
     }
 
     /**
@@ -48,29 +50,25 @@ class CartController extends Controller
      */
     public function store(Request $request,$id)
     {
-        $order      = Order::where('user_id',Auth::user()->id)
-        ->where('status','pending')
-        ->get();
+
         $product    = Product::find($id);
-        $priceAfterDiscount = $product->price - (($product->price * $product->discount)/100);
+        if($product->inStock==0){
+            session()->flash('danger', 'Sorry product '.$product->name .' not availabe right now');
+            return redirect()->back();
+        }
         $cart = session()->get('cart');
         if(isset($cart[$id])) {
-            if($cart[$id]['quantity'] < $cart[$id]['inStock']){
+            if($cart[$id]['quantity'] < $product->inStock){
                 $cart[$id]['quantity']++;
             }else{
-                session()->flash('status', 'Product '.$cart[$id]['name'].' has only '.$cart[$id]['inStock'].' quantity');
+                session()->flash('status', 'Product '.$product->name.' has only '.$product->inStock.' quantity');
                 return redirect()->route('shop.cart');
             }
             session()->put('cart', $cart);
             return redirect()->route('shop.cart');
         }
         $cart[$id] = [
-            "name" => $product->name,
             "quantity" => $request->quantity,
-            "inStock"   => $product->inStock,
-            "price" => $priceAfterDiscount,
-            "photo" => $product->pictures[0]->picture,
-            "productQuantity" =>$product->quantity
         ];
         session()->put('cart', $cart);
         return redirect()->route('shop.cart');
@@ -110,6 +108,14 @@ class CartController extends Controller
         if($id and $request->quantity)
         {
             $cart = session()->get('cart');
+            $product = Product::find($id);
+            if(!$product->count()){
+                session()->flash('notfound', 'Sorry product not availabe right now ');
+                return redirect()->route('shop.cart');
+            }elseif($product->inStock < $request->quantity){
+                session()->flash('leakquantity', 'Sorry product limit quantity');
+                return redirect()->route('shop.cart');
+            }
 
             $cart[$id]["quantity"] = $request->quantity;
 
@@ -123,12 +129,7 @@ class CartController extends Controller
     {
         $cart = session()->get('cart');
         if(isset($cart[$id])) {
-            $orderProduct = Order_product::where('product_id',$id)->first();
-            if($orderProduct){
-                $orderProduct->delete();
-            }
             unset($cart[$id]);
-
             session()->put('cart', $cart);
         }
 
@@ -152,6 +153,10 @@ class CartController extends Controller
         if(!Auth::user()){
             return redirect()->route('login');
         }else{
+            if(!session('cart')){
+                session()->flash('not_available', 'Sorry product not available');
+                return redirect()->back();
+            }
             $categories         = Category::active()
             ->orderBy('created_at', 'desc')
             ->take(6)
@@ -194,7 +199,10 @@ class CartController extends Controller
                 $order->save();
             }
             foreach(session('cart') as $id => $cart_info){
-                $orderProduct = Order_product::create([
+                $product            = Product::find($id);
+                $product->inStock   -= $cart_info['quantity'];
+                $product->save();
+                $orderProduct   = Order_product::create([
                     'product_id'    => $id,
                     'order_id'      => $order->id,
                     'quantity'      => $cart_info['quantity']
@@ -204,7 +212,8 @@ class CartController extends Controller
             $request->session()->forget('cart');//Clear seasion
             return view('users.carts.thanks',compact('order','categories'));
         }else{
-            return redirect()->route('cart.tracking');
+            session()->flash('not_available', 'Sorry product not available');
+            return redirect()->route('shop.cart');
         }
 
     }

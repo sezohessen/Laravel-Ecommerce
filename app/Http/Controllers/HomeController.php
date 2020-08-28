@@ -12,10 +12,6 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
 
-	public function __construct() {
-		$this->middleware('auth');
-	}
-
 	public function index() {
         $first_Slider       = Category::active()
         ->orderBy('created_at','desc')
@@ -35,6 +31,9 @@ class HomeController extends Controller
         $users              = User::all();
         $categories         = Category::active()
         ->orderBy('created_at', 'desc')
+        ->whereHas('products', function ($query) {
+            return $query->where('active', 1);
+        })
         ->take(6)
         ->get();
         $product_picture    = product_picture::all();
@@ -100,6 +99,10 @@ class HomeController extends Controller
 
         $product_picture    = product_picture::all();
         $categories         = Category::active()
+        ->orderBy('created_at', 'desc')
+        ->whereHas('products', function ($query) {
+            return $query->where('active', 1);
+        })
         ->get();
         return view('users.categories.show',compact('categories','products','product_picture','all_product',
         ));
@@ -142,6 +145,11 @@ class HomeController extends Controller
         $all_product        = Product::active($id);
         $product_picture    = product_picture::all();
         $categories         = Category::active()
+        ->orderBy('created_at', 'desc')
+        ->whereHas('products', function ($query) {
+            return $query->where('active', 1);
+        })
+        ->take(6)
         ->get();
         $category_info      = Category::where('id',$id)
         ->get()
@@ -152,6 +160,10 @@ class HomeController extends Controller
     public function product($id,$slug)
     {
         $categories         = Category::active()
+        ->orderBy('created_at', 'desc')
+        ->whereHas('products', function ($query) {
+            return $query->where('active', 1);
+        })
         ->get();
         $product            = Product::find($id);
         if($product==NULL){

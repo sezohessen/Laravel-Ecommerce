@@ -23,6 +23,10 @@ class Product extends Model
     {
         return $this->hasMany(Comment::class);
     }
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class);
+    }
     public static function active($id = NULL)
     {
         if($id == NULL){
