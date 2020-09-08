@@ -8,9 +8,21 @@ use App\Product;
 use App\product_picture;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+
+    public function __construct()
+    {
+      $this->categories = Category::active()
+      ->orderBy('created_at', 'desc')
+      ->whereHas('products', function ($query) {
+        return $query->where('active', 1);
+      })
+      ->take(6)
+      ->get();
+    }
 
 	public function index() {
         $first_Slider       = Category::active()
@@ -29,13 +41,7 @@ class HomeController extends Controller
         ->get()
         ->first();
         $users              = User::all();
-        $categories         = Category::active()
-        ->orderBy('created_at', 'desc')
-        ->whereHas('products', function ($query) {
-            return $query->where('active', 1);
-        })
-        ->take(6)
-        ->get();
+        $categories = $this->categories;
         $product_picture    = product_picture::all();
         $products           = Product::active()
         //Select from db depend on Relation
@@ -144,13 +150,7 @@ class HomeController extends Controller
         // -----------Search And Sort--------------
         $all_product        = Product::active($id);
         $product_picture    = product_picture::all();
-        $categories         = Category::active()
-        ->orderBy('created_at', 'desc')
-        ->whereHas('products', function ($query) {
-            return $query->where('active', 1);
-        })
-        ->take(6)
-        ->get();
+        $categories = $this->categories;
         $category_info      = Category::where('id',$id)
         ->get()
         ->first();
@@ -159,12 +159,7 @@ class HomeController extends Controller
     }
     public function product($id,$slug)
     {
-        $categories         = Category::active()
-        ->orderBy('created_at', 'desc')
-        ->whereHas('products', function ($query) {
-            return $query->where('active', 1);
-        })
-        ->get();
+        $categories         = $this->categories;
         $product            = Product::find($id);
         if($product==NULL){
             return view('users.notfound');
@@ -173,23 +168,28 @@ class HomeController extends Controller
         if (!$product->active||($slug!=$product->slug)) {
             return view('users.notfound');
         }
-        $product_pictures = product_picture::where('product_id', $id)
+        $product_pictures   = product_picture::where('product_id', $id)
         ->orderBy('id', 'desc')
         ->get();
-        $products       = Product::active()
+        $products           = Product::active()
         ->where('category_id',$product->category->id)
         ->where('id','!=',$id)
         ->orderBy('created_at', 'desc')
         ->take(8)
         ->get();
-        $comments       = Comment::where('product_id',$id)
+        $comments           = Comment::where('product_id',$id)
         ->orderBy('created_at', 'desc')
         ->get();
-        $avr_star       = Comment::where('product_id',$id)->selectRaw('SUM(rate)/COUNT(user_id) AS avg_rating')
+        $avr_star           = Comment::where('product_id',$id)
+        ->selectRaw('SUM(rate)/COUNT(user_id) AS avg_rating')
         ->first()
         ->avg_rating;
-        $product_star = round($avr_star);
+        $product_star       = round($avr_star);
+        $hasComment         = Comment::where('product_id',$id)
+        ->where('user_id',Auth::id())
+        ->get()
+        ->first();
         return view('users.product.show',compact('categories','product','product_pictures','products',
-        'comments','avr_star','product_star'));
+        'comments','avr_star','product_star','hasComment'));
     }
 }

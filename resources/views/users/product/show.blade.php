@@ -144,6 +144,14 @@
                                             </button>
                                         </div>
                                     @endif
+                                    @if (session('exist'))
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            {{ session('exist') }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
                                 </div>
 								<div class="woocommerce-tabs">
 									<ul class="nav nav-tabs wc-tabs" id="myTab" role="tablist">
@@ -210,47 +218,55 @@
                                                             </div>
                                                         @endforeach
 													</div>
-												</div>
-												<div id="review_form_wrapper">
-													<div id="review_form">
-														<div id="respond" class="comment-respond">
-                                                            <form id="commentform" class="comment-form"
-                                                            action="{{ route('product.comment',['id'=>$product->id, 'slug' => str_slug($product->name)] ) }}"
-                                                            method="POST">
-                                                                @csrf
-																<p class="comment-notes">
-																	<span>Add a review</span>
-																	<span id="email-notes">
-																		Your email address will not be published. Required fields are marked
-																		<span class="required">*</span>
-																	</span>
-																</p>
-																<div class="comment-form-rating">
-																	<h5>Your rating</h5>
-                                                                    <div class="rate">
-                                                                        <input type="radio" id="star5" name="rate" value="5" />
-                                                                        <label for="star5" title="Very good">5 stars</label>
-                                                                        <input type="radio" id="star4" name="rate" value="4" />
-                                                                        <label for="star4" title="Good">4 stars</label>
-                                                                        <input type="radio" id="star3" name="rate" value="3" />
-                                                                        <label for="star3" title="Nice">3 stars</label>
-                                                                        <input type="radio" id="star2" name="rate" value="2" />
-                                                                        <label for="star2" title="Bad">2 stars</label>
-                                                                        <input type="radio" id="star1" name="rate" value="1" />
-                                                                        <label for="star1" title="Very bad">1 star</label>
+                                                </div>
+                                                @if (!$hasComment)
+                                                    @if (Auth::user())
+                                                    <div id="review_form_wrapper">
+                                                        <div id="review_form">
+                                                            <div id="respond" class="comment-respond">
+                                                                <form id="commentform" class="comment-form"
+                                                                action="{{ route('product.comment',['id'=>$product->id, 'slug' => str_slug($product->name)] ) }}"
+                                                                method="POST">
+                                                                    @csrf
+                                                                    <p class="comment-notes">
+                                                                        <span>Add a review</span>
+                                                                        <span id="email-notes">
+                                                                            Your email address will not be published. Required fields are marked
+                                                                            <span class="required">*</span>
+                                                                        </span>
+                                                                    </p>
+                                                                    <div class="comment-form-rating">
+                                                                        <h5>Your rating</h5>
+                                                                        <div class="rate">
+                                                                            <input type="radio" id="star5" name="rate" value="5" />
+                                                                            <label for="star5" title="Very good">5 stars</label>
+                                                                            <input type="radio" id="star4" name="rate" value="4" />
+                                                                            <label for="star4" title="Good">4 stars</label>
+                                                                            <input type="radio" id="star3" name="rate" value="3" />
+                                                                            <label for="star3" title="Nice">3 stars</label>
+                                                                            <input type="radio" id="star2" name="rate" value="2" />
+                                                                            <label for="star2" title="Bad">2 stars</label>
+                                                                            <input type="radio" id="star1" name="rate" value="1" />
+                                                                            <label for="star1" title="Very bad">1 star</label>
+                                                                        </div>
                                                                     </div>
-																</div>
-																<p class="comment-form-comment">
-																	<textarea id="comment" name="comment" required placeholder="Write Your Review..."></textarea>
-																</p>
-																<p class="form-submit">
-																	<input name="submit" type="submit" id="submit" class="submit au-btn btn-small" value="Submit">
-																	<span><i class="zmdi zmdi-arrow-right"></i></span>
-																</p>
-															</form>
-														</div>
-													</div>
-												</div>
+                                                                    <p class="comment-form-comment">
+                                                                        <textarea id="comment" name="comment" required placeholder="Write Your Review..."></textarea>
+                                                                    </p>
+                                                                    <p class="form-submit">
+                                                                        <input name="submit" type="submit" id="submit" class="submit au-btn btn-small" value="Submit">
+                                                                        <span><i class="zmdi zmdi-arrow-right"></i></span>
+                                                                    </p>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @else
+                                                    <p class="comment-notes">
+                                                        <a href="{{ route('login') }}">Login to post comment</a>
+                                                    </p>
+                                                    @endif
+                                                @endif
 											</div>
 										</div>
 									</div>

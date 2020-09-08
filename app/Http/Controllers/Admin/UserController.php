@@ -9,6 +9,7 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 
 use App\Http\Controllers\Controller;
+use App\Order;
 use App\Product;
 use Illuminate\Http\Request;
 class UserController extends Controller
@@ -16,11 +17,24 @@ class UserController extends Controller
 
     public function index(User $model)
     {
-        $users = User::all();
+        $users      = User::all();
         $categories = Category::all();
-        $products = Product::all();
-        $comments = Comment::all();
-        return view('admin.users.index', compact('users','categories','products','comments'));
+        $products   = Product::all();
+        $comments   = Comment::all();
+        $pending            = Order::where('status','withApproval')
+        ->orderBy('created_at','desc')
+        ->get();
+        $shipped            = Order::where('status','shipped')
+        ->orderBy('created_at','desc')
+        ->get();
+        $deliverd            = Order::where('status','delivered')
+        ->orderBy('created_at','desc')
+        ->get();
+        $canceled            = Order::where('status','canceled')
+        ->orderBy('created_at','desc')
+        ->get();
+        return view('admin.users.index', compact('users','categories','products','comments','pending',
+        'shipped','deliverd','canceled'));
     }
 
     public function create()

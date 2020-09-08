@@ -21,14 +21,20 @@ class CartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+      $this->categories = Category::active()
+      ->orderBy('created_at', 'desc')
+      ->whereHas('products', function ($query) {
+        return $query->where('active', 1);
+      })
+      ->take(6)
+      ->get();
+    }
     public function index()
     {
-        $categories         = Category::active()
-        ->orderBy('created_at', 'desc')
-        ->whereHas('products', function ($query) {
-            return $query->where('active', 1);
-        })
-        ->get();
+        $categories = $this->categories;
         return view('users.carts.index',compact('categories'));
     }
 
@@ -157,10 +163,7 @@ class CartController extends Controller
                 session()->flash('not_available', 'Sorry product not available');
                 return redirect()->back();
             }
-            $categories         = Category::active()
-            ->orderBy('created_at', 'desc')
-            ->take(6)
-            ->get();
+            $categories = $this->categories;
             return view('users.carts.check-out',compact('categories'));
         }
     }
@@ -174,10 +177,7 @@ class CartController extends Controller
             'phone'         => 'required|max:20',
             'paymentMethod' => 'required'
         ]);
-        $categories         = Category::active()
-        ->orderBy('created_at', 'desc')
-        ->take(6)
-        ->get();
+        $categories = $this->categories;
         if(session('cart')){
             /* Add Order */
             $order = Order::create([
@@ -205,7 +205,9 @@ class CartController extends Controller
                 $orderProduct   = Order_product::create([
                     'product_id'    => $id,
                     'order_id'      => $order->id,
-                    'quantity'      => $cart_info['quantity']
+                    'quantity'      => $cart_info['quantity'],
+                    'price'         => $product->price,
+                    'discount'      => $product->discount
                 ]);
             }
             /*Add order */
@@ -219,14 +221,10 @@ class CartController extends Controller
     }
     public function trackOrder()
     {
-        $categories     = Category::active()
-        ->orderBy('created_at', 'desc')
-        ->take(6)
-        ->get();
+        $categories = $this->categories;
         $orders         = Order::where('user_id',Auth::user()->id)
         ->orderBy('created_at', 'desc')
         ->get();
-
         return view('users.carts.tracking',compact('orders','categories'));
     }
 }

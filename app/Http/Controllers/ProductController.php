@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use App\Category;
 use App\Comment;
+use App\Order;
 use App\Product;
 use App\product_picture;
 use App\User;
@@ -19,12 +20,25 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $categories = Category::all();
-        $comments   = Comment::all();
-        $products = Product::all()->sortByDesc("id");
-        $product_picture= product_picture::all();
-        return view('admin.products.index',compact('categories','users','products','product_picture','comments'));
+        $users              = User::all();
+        $categories         = Category::all();
+        $comments           = Comment::all();
+        $products           = Product::all()->sortByDesc("id");
+        $product_picture    = product_picture::all();
+        $pending            = Order::where('status','withApproval')
+        ->orderBy('created_at','desc')
+        ->get();
+        $shipped            = Order::where('status','shipped')
+        ->orderBy('created_at','desc')
+        ->get();
+        $deliverd            = Order::where('status','delivered')
+        ->orderBy('created_at','desc')
+        ->get();
+        $canceled            = Order::where('status','canceled')
+        ->orderBy('created_at','desc')
+        ->get();
+        return view('admin.products.index',compact('categories','users','products','product_picture',
+        'comments','pending','shipped','deliverd','canceled'));
     }
 
     /**
@@ -105,10 +119,10 @@ class ProductController extends Controller
     public function show($id)
     {
         $product            = Product::find($id);
-        $comment            = Comment::where('product_id',$id)
-        ->get();
         $product_pictures   = product_picture::where('product_id', $id)
         ->orderBy('id', 'desc')
+        ->get();
+        $comment            = Comment::where('product_id',$id)
         ->get();
         return view('admin.products.show',compact('product','product_pictures','comment'));
     }

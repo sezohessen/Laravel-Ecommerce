@@ -11,13 +11,14 @@
                         <div class="row">
                             @foreach ($orders as $order)
                                 <div class="col-md-12 hh-grayBox pt45 pb20" style="margin: 50px 0px">
-                                    <h4>ID tracking :{{ $order->id }}</h4>
+                                    <h4 style="margin: 10px">ID tracking :{{ $order->id }}</h4>
+                                    @if ($order->status =='canceled')
+                                        <div class="alert alert-danger" role="alert">
+                                            Order had been canceled
+                                        </div>
+                                    @else
                                     <div class="row justify-content-between">
-                                        <div class="order-tracking <?php
-                                                if($order->status == 'withApproval'||$order->status == 'Shipped' || $order->status == 'Delivered'){
-                                                    echo 'completed';
-                                                }
-                                                ?>">
+                                        <div class="order-tracking completed">
                                             <span class="is-complete"></span>
                                             <p>Ordered<br>
                                             <p>{{ $order->created_at->format('H:i ') }}</p>
@@ -25,22 +26,32 @@
                                             </p>
                                         </div>
                                         <div class="order-tracking <?php
-                                            if($order->status == 'Shipped' || $order->status == 'Delivered'){
+                                            if($order->shipped != NULL){
                                                 echo 'completed';
                                             }
                                             ?>">
                                             <span class="is-complete"></span>
-                                            <p>Shipped<br><span>Tue, June 25</span></p>
+                                            <p>Shipped<br>
+                                            @if ($order->shipped != NULL)
+                                                <p>{{ Carbon\Carbon::parse($order->shipped)->format('H:i') }}</p>
+                                                <span>{{ Carbon\Carbon::parse($order->shipped)->format('l, F j ')}}</span>
+                                            @endif
                                         </div>
                                         <div class="order-tracking <?php
-                                            if($order->status == 'Delivered'){
+                                            if($order->delivered != NULL){
                                                 echo 'completed';
                                             }
-                                            ?>">
+                                        ?>">
                                             <span class="is-complete"></span>
-                                            <p>Delivered<br><span>Fri, June 28</span></p>
+                                            <p>Delivered<br>
+                                            @if ($order->delivered != NULL)
+                                                <p>{{ Carbon\Carbon::parse($order->delivered)->format('H:i') }}</p>
+                                                <span>{{ Carbon\Carbon::parse($order->delivered)->format('l, F j ')}}</span>
+                                            @endif
                                         </div>
                                     </div>
+                                    @endif
+
                                 </div>
                             @endforeach
                         </div>

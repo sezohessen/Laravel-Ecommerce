@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                                        <i class="fas fa-chart-bar"></i>
+                                        <i class="fas fa-list"></i>
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                                        <i class="fas fa-users"></i>
+                                        <i class="fas fa-shopping-cart"></i>
                                     </div>
                                 </div>
                             </div>
@@ -71,6 +71,26 @@
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-info text-white rounded-circle shadow">
                                         <i class="fas fa-comments"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 ">
+                    <div class="card card-stats mt-4 mb-xl-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Orders</h5>
+                                    <a href="{{ route('orders',['status'=>'pending']) }}">Pending :<strong>{{ $pending->count() }}</strong></a>|
+                                    <a href="{{ route('orders',['status'=>'shipped']) }}">Shipped :<strong>{{ $shipped->count() }}</strong> </a>|
+                                    <a href="{{ route('orders',['status'=>'delivered']) }}">Delivered :<strong>{{ $deliverd->count() }}</strong> </a>|
+                                    <a href="{{ route('orders',['status'=>'canceled']) }}">canceled :<strong>{{ $canceled->count() }}</strong> </a>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
+                                        <i class="fas fa-truck"></i>
                                     </div>
                                 </div>
                             </div>

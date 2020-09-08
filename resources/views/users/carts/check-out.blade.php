@@ -41,7 +41,10 @@
 										<tbody>
                                             <?php $total = 0 ?>
                                             @foreach(session('cart') as $id => $cart_info)
-                                            <?php $product = App\Product::find($id);?>
+                                            <?php $product = App\Product::find($id);
+                                            $price   = $product->price - (($product->price * $product->discount)/100);
+                                            $total  += $price * $cart_info['quantity'];
+                                            ?>
                                             @if (!$product)
                                                 <?php
                                                 if(isset($cart[$id])) {
@@ -51,19 +54,18 @@
                                                 ?>
                                                 @continue
                                             @endif
-                                            <?php $total += $product->price * $cart_info['quantity'] ?>
                                                 <tr class="cart_item">
                                                     <td class="product-name">
                                                         <img src="{{ asset('uploads/products/'.$product->pictures[0]->picture) }}" alt="product">
                                                         <div class="review-wrap">
                                                             <span class="cart_item_title">{{ $product->name }}</span>
-                                                            <span class="product-quantity">x{{ $product->quantity }}</span>
+                                                            <span class="product-quantity">x{{ $cart_info['quantity'] }}</span>
                                                         </div>
                                                     </td>
                                                     <td class="product-total">
                                                         <span class="woocommerce-Price-amount amount">
                                                             <span class="woocommerce-Price-currencySymbol">
-                                                                ${{  $product->price * $cart_info['quantity'] }}
+                                                                ${{  $price * $cart_info['quantity'] }}
                                                             </span>
                                                         </span>
                                                     </td>

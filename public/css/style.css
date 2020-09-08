@@ -457,7 +457,6 @@ ul {
 }
 .order-tracking:first-child:before{display: none;}
 .order-tracking.completed:before{background-color: #27aa80;}
-
 /*New*/
 /* Back To Top Button */
 #back-to-top {

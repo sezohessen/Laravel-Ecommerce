@@ -72,6 +72,14 @@ Route::group(['middleware' => ['auth', 'admin'] ], function () {
     Route::get('admin/comments', 'CommentController@index')->name('comments');
     Route::get('admin/comments/product/{id}', 'CommentController@productComment')->name('comments.product');
     Route::get('admin/comments/destroy/{id}', 'CommentController@destroy')->name('comment.destroy');
+    /* Order Controller */
+    Route::get('admin/orders/{status}', 'OrderController@index')->name('orders');
+    Route::get('admin/orders/show/{id}', 'OrderController@show')->name('order.show');
+    Route::post('admin/orders/shipped/{id}', 'OrderController@shipped')->name('order.shipped');
+    Route::post('admin/orders/delivered/{id}', 'OrderController@delivered')->name('order.delivered');
+    Route::get('admin/orders/canceled/{id}', 'OrderController@canceled')->name('order.canceled');
+    Route::post('admin/orders/delete/{id}', 'OrderController@destroy')->name('order.delete');
+
     /* Website */
     Route::get('main/shop/check-out', 'CartController@checkOut')->name('cart.checkOut');
     Route::post('main/shop/check-out/placeOrder', 'CartController@placeOrder')->name('cart.placeOrder');

@@ -1,5 +1,4 @@
 @extends('layouts.app', ['title' => __('User Management')])
-
 @section('content')
     @include('layouts.headers.cards')
     @if ($comments->count())
@@ -29,6 +28,7 @@
                                 </button>
                             </div>
                         @endif
+    
                     </div>
 
                     <div class="table-responsive">
@@ -70,7 +70,6 @@
                                                 </div>
                                             </div>
                                         </td>
-
                                     </tr>
                                 @endforeach
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderProductPivotTable extends Migration
+class CreateOrderProductsPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -22,6 +22,8 @@ class CreateOrderProductPivotTable extends Migration
             $table->foreign('order_id')->references('id')->on('orders')
                   ->onDelete('cascade')->onUpdate('cascade');
             $table->integer('quantity');
+            $table->decimal('price',10,2);
+            $table->integer('discount')->default(0);
             $table->timestamps();
         });
     }
@@ -33,6 +35,6 @@ class CreateOrderProductPivotTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_product');
+        Schema::dropIfExists('order_products');
     }
 }

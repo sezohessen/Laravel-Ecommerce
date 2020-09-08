@@ -14,7 +14,7 @@
 			</div>
         </section>
 		<!-- End Breadcrumb Section -->
-    
+
         <!-- Shop Cart Section -->
     @if(session('cart'))
 		<section class="shop-cart-section section-box">
@@ -68,7 +68,11 @@
 								<tbody>
                                 <?php $total = 0 ?>
                                     @foreach(session('cart') as $id => $cart_info)
-                                    <?php $product = App\Product::find($id);?>
+                                    <?php
+                                    $product = App\Product::find($id);
+                                    $price   = $product->price - (($product->price * $product->discount)/100);
+                                    $total  += $price * $cart_info['quantity'];
+                                    ?>
                                         @if (!$product)
                                             <?php
                                             if(isset($cart_info[$id])) {
@@ -78,7 +82,6 @@
                                             ?>
                                             @continue
                                         @endif
-                                    <?php $total += $product->price * $cart_info['quantity'] ?>
 									<tr class="woocommerce-cart-form__cart-item cart_item">
 										<td class="product-remove">
                                             <a href="{{ route('cart.remove',['id'=>$id]) }}" class="remove">
@@ -96,7 +99,7 @@
 										<td class="product-price" data-title="Price">
 											<span class="woocommerce-Price-amount amount">
 												<span class="woocommerce-Price-currencySymbol">$</span>
-												{{ $product->price }}
+												{{ $price }}
 											</span>
 										</td>
 										<td class="product-quantity" data-title="Quantity">
@@ -119,7 +122,7 @@
 										<td class="product-subtotal" data-title="Total">
 											<span class="woocommerce-Price-amount amount">
 												<span class="woocommerce-Price-currencySymbol">$</span>
-												{{  $product->price * $cart_info['quantity'] }}
+												{{  $price * $cart_info['quantity'] }}
 											</span>
 										</td>
                                     </tr>

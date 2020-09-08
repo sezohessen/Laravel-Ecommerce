@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Comment;
+use App\Order;
 use App\Product;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -18,14 +19,28 @@ class CommentController extends Controller
      */
     public function index()
     {
+
         $users          = User::all();
         $categories     = Category::all();
         $products       = Product::all();
         $comments       = Comment::all()
         ->sortByDesc('created_at');
+        $pending            = Order::where('status','withApproval')
+        ->orderBy('created_at','desc')
+        ->get();
+        $shipped            = Order::where('status','shipped')
+        ->orderBy('created_at','desc')
+        ->get();
+        $deliverd            = Order::where('status','delivered')
+        ->orderBy('created_at','desc')
+        ->get();
+        $canceled            = Order::where('status','canceled')
+        ->orderBy('created_at','desc')
+        ->get();
         /* You could still use sortBy (at the collection level) instead of orderBy
         (at the query level) if you still want to use all() since it returns a collection of objects. */
-        return view('admin.comments.index',compact('users','categories','products','comments'));
+        return view('admin.comments.index',compact('users','categories','products','comments','pending',
+        'shipped','deliverd','canceled'));
     }
 
     /**
@@ -50,6 +65,14 @@ class CommentController extends Controller
             'comment' =>'required|min:3|max:1000',
             'rate' =>'required',
         ]);
+        $comment = Comment::where('product_id',$id)
+        ->where('user_id',Auth::id())
+        ->get()
+        ->first();
+        if($comment){
+            session()->flash('exist', 'You have already review');
+            return redirect()->back();
+        }
         $post = Comment::create([
             'comment' =>$request->comment,
             'rate' =>$request->rate,

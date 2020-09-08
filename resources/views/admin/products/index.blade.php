@@ -17,7 +17,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-12">
                         @if (session('status'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -46,7 +46,7 @@
                                 @foreach ($products as $product)
                                     <tr>
                                         <td>
-                                            <img src="{{asset('uploads/products/'.$product->pictures[0]->picture)}}" alt="{{$product->pictures[0]->picture}}" class="img-fluid img-thumbnail" width="100px" height="100px">   
+                                            <img src="{{asset('uploads/products/'.$product->pictures[0]->picture)}}" alt="{{$product->pictures[0]->picture}}" class="img-fluid img-thumbnail" width="100px" height="100px">
                                         </td>
                                         <td>
                                             <p>{{$product->name}}</p>
@@ -86,7 +86,7 @@
                                                 </a>
                                             @endif
                                         </td>
-                                        <td> 
+                                        <td>
                                             <a href="{{route('products.show',$product->id)}}">
                                                 <button class="btn">See More</button>
                                             </a>
@@ -102,7 +102,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                    </tr> 
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -110,7 +110,7 @@
                 </div>
             </div>
         </div>
-            
+
         @include('layouts.footers.auth')
     </div>
     @else
@@ -118,6 +118,6 @@
         <h1>There is no products to be showen </h1>
         <a href="{{route('products.create')}}"> <button type="button" class="btn btn-primary">Create Product</button></a>
     </div>
-        
+
     @endif
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Category;
 use App\Comment;
+use App\Order;
 use App\Product;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -20,7 +21,20 @@ class CategoryController extends Controller
         $categories = Category::all()->sortByDesc("id");
         $products   = Product::all();
         $comments   = Comment::all();
-        return view('admin.categories.index',compact('categories','users','products','comments'));
+        $pending            = Order::where('status','withApproval')
+        ->orderBy('created_at','desc')
+        ->get();
+        $shipped            = Order::where('status','shipped')
+        ->orderBy('created_at','desc')
+        ->get();
+        $deliverd            = Order::where('status','delivered')
+        ->orderBy('created_at','desc')
+        ->get();
+        $canceled            = Order::where('status','canceled')
+        ->orderBy('created_at','desc')
+        ->get();
+        return view('admin.categories.index',compact('categories','users','products','comments','pending',
+        'shipped','deliverd','canceled'));
     }
 
     /**
@@ -74,8 +88,14 @@ class CategoryController extends Controller
         $products   = Product::where('category_id', $id)
         ->orderBy('id', 'desc')
         ->get();
-
-        return view('admin.categories.show',compact('category','categories','products','comments'));
+        $orders         = Order::where('status','withApproval')
+        ->orderBy('created_at','desc')
+        ->get();
+        $shipped    = Order::where('status','shipped')
+        ->orderBy('created_at','desc')
+        ->get();
+        return view('admin.categories.show',compact('category','categories','products','comments','orders',
+        'shipped'));
     }
 
     /**

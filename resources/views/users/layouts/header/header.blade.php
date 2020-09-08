@@ -276,51 +276,49 @@
 								</div>
 								<div class="widget_shopping_cart">
 									<div class="widget_shopping_cart_content">
+                                        @if (session('cart'))
 										<ul class="woocommerce-mini-cart cart_list product_list_widget ">
-											<li class="woocommerce-mini-cart-item mini_cart_item clearfix">
+                                            <?php $total = 0 ?>
+                                            @foreach (session('cart') as $id => $cart_info)
+                                            <?php
+                                            $product = App\Product::find($id);
+                                            $price   = $product->price - (($product->price * $product->discount)/100);
+                                            $total  += $price * $cart_info['quantity'];
+                                            ?>
+                                            <li class="woocommerce-mini-cart-item mini_cart_item clearfix">
 												<a class="product-image" href="#">
-                                                    <img src="{{asset('images/hp-1-drop-cart-1.png')}}" alt="cart-1">
+                                                    <img src="{{ asset('uploads/products/'.$product->pictures[0]->picture) }}" alt="cart-1">
 												</a>
-												<a class="product-title" href="#">Low Table/Stool</a>
+												<a class="product-title" href="#">{{ $product->name }}</a>
 												<span class="quantity">
-													4 ×
+													{{ $cart_info['quantity'] }} ×
 													<span class="woocommerce-Price-amount amount">
 														<span class="woocommerce-Price-currencySymbol">$</span>
-														29
+														{{ $price }}
 													</span>
 												</span>
-												<a href="#" class="remove">
+												<a href="{{ route('cart.remove',['id'=>$id]) }}" class="remove">
 													<span class="lnr lnr-cross"></span>
 												</a>
 											</li>
-											<li class="woocommerce-mini-cart-item mini_cart_item clearfix">
-												<a class="product-image" href="#">
-													<img src="{{asset('images/hp-1-drop-cart-2.png')}}" alt="cart-2">
-												</a>
-												<a class="product-title" href="#">Set of 3 Porcelain</a>
-												<span class="quantity">
-													2 ×
-													<span class="woocommerce-Price-amount amount">
-														<span class="woocommerce-Price-currencySymbol">$</span>
-														124
-													</span>
-												</span>
-												<a href="#" class="remove">
-													<span class="lnr lnr-cross"></span>
-												</a>
-											</li>
+                                            @endforeach
 										</ul>
+
 										<p class="woocommerce-mini-cart__total total">
 											<span>Subtotal:</span>
 											<span class="woocommerce-Price-amount amount">
-												<span class="woocommerce-Price-currencySymbol">$</span>
-												364
+                                                <span class="woocommerce-Price-currencySymbol">$</span>
+
+												{{ $total }}
 											</span>
 										</p>
 										<p class="woocommerce-mini-cart__buttons buttons">
-											<a href="#" class="button wc-forward au-btn btn-small">View Cart</a>
-											<a href="#" class="button checkout wc-forward au-btn au-btn-black btn-small">Checkout</a>
-										</p>
+											<a href="{{ route('shop.cart') }}" class="button wc-forward au-btn btn-small">View Cart</a>
+											<a href="{{ route('cart.checkOut') }}" class="button checkout wc-forward au-btn au-btn-black btn-small">Checkout</a>
+                                        </p>
+                                        @else
+                                        <strong>No products yet</strong>
+                                        @endif
 									</div>
 								</div>
 							</div>
