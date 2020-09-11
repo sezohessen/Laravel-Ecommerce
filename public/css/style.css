@@ -457,6 +457,40 @@ ul {
 }
 .order-tracking:first-child:before{display: none;}
 .order-tracking.completed:before{background-color: #27aa80;}
+.edit-profile {
+    margin: 100px 0;
+}
+.edit-profile .card-body ul.profile-user{
+    margin: 20px auto;
+    width: 75%;
+    box-shadow: -1px 2px 3px #ccc;
+}
+.edit-profile .card-body ul.profile-user li{
+    border-bottom: 1px solid #cdcdcd;
+    padding: 8px;
+}
+.edit-profile .card-body ul.profile-user li:hover a{
+    color: #fff;
+    transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+}
+.edit-profile .card-body ul.profile-user li:hover{
+    background-color: #008BFF;
+    transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+}
+.edit-profile .card-body ul.profile-user li:last-child{
+    border: none;
+}
+.edit-profile .card-body ul.profile-user li a{
+    color: #008BFF;
+    text-align: left;
+    font-size: 16px;
+}
 /*New*/
 /* Back To Top Button */
 #back-to-top {
@@ -661,7 +695,6 @@ textarea:-moz-placeholder {
 /* 4. Header ------------------------------------------------------------ */
 /* Header Desktop hp-1 hp-2 hp-3 hp-6*/
 .header-hp-1.style-header-hp-1 {
-  position: absolute;
   top: 0;
   width: 100%;
   z-index: 9999;
@@ -718,6 +751,9 @@ textarea:-moz-placeholder {
       -o-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
       -ms-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
     }
+    .header-hp-1 .menu-desktop-inner .main-menu .menu-item .user{
+        width: 200px;
+    }
       .header-hp-1 .menu-desktop-inner .main-menu .menu-item .sub-menu .sub-menu-item {
         float: left;
         overflow: hidden; }
@@ -746,6 +782,23 @@ textarea:-moz-placeholder {
           -o-transition: all .3s ease;
           -moz-transition: all .3s ease;
           transition: all .3s ease;}
+          .header-hp-1 .menu-desktop-inner .main-menu .menu-item .sub-menu button.login{
+              margin: 0 auto;
+              display: block;
+              padding: 2px;
+          }
+          .header-hp-1 .menu-desktop-inner .main-menu .menu-item .sub-menu button.logout{
+              background: none;
+              padding: 0;
+              color: #666;
+          }
+          .header-hp-1 .menu-desktop-inner .main-menu .menu-item .sub-menu button a,
+          .header-hp-1 .menu-desktop-inner .main-menu .menu-item .sub-menu button a:hover{
+            color:#ffffff!important;
+          }
+          .header-hp-1 .menu-desktop-inner .main-menu .menu-item .sub-menu  button a:before{
+            background: #ffffff;
+          }
         .header-hp-1 .menu-desktop-inner .main-menu .menu-item .sub-menu a i {
           font-size: 17px;
           position: absolute;
@@ -808,9 +861,6 @@ textarea:-moz-placeholder {
         padding: 0 42px; }
       .header-hp-1 .menu-desktop-inner .main-menu .menu-item.mega-menu.mega-menu-1 .sub-menu figure img {
         width: 72.1%; }
-    .header-hp-1 .menu-desktop-inner .main-menu .menu-item:last-child .sub-menu {
-      right: 5px;
-      left: inherit; }
 .header-hp-1 .header-right {
   align-items: center;
   -moz-align-items: center;
@@ -859,11 +909,13 @@ textarea:-moz-placeholder {
     margin-top: 30px;
     background: #fff; }
     .header-hp-1 .site-header-cart .widget_shopping_cart .widget_shopping_cart_content {
-      box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-      -moz-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-      -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-      -o-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-      -ms-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+        -o-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+        -ms-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+        max-height: 435px;
+        overflow: overlay;
     }
     .header-hp-1 .site-header-cart .widget_shopping_cart .product_list_widget {
       padding: 40px 30px 0px; }
@@ -1673,9 +1725,14 @@ textarea:-moz-placeholder {
   padding-top: 41px;
   margin-left: 10px; }
 .categories-hp-1 .categories-content .categories-detail {
-  position: relative; }
+  position: relative;
+  min-height: 400px;
+  max-height: 400px;
+}
   .categories-hp-1 .categories-content .categories-detail .images {
-    overflow: hidden; }
+    overflow: hidden;
+    max-height: 400px;
+}
     .categories-hp-1 .categories-content .categories-detail .images img {
       transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       -moz-transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -3948,7 +4005,9 @@ textarea:-moz-placeholder {
 .my-account-section .woocommerce .entry-content {
   padding-right: 10px; }
   .my-account-section .woocommerce .entry-content .woocommerce-LostPassword {
-    padding-top: 27px; }
+    padding-top: 27px;
+    display: inline-block;
+}
     .my-account-section .woocommerce .entry-content .woocommerce-LostPassword a {
       color: #ff6666; }
       .my-account-section .woocommerce .entry-content .woocommerce-LostPassword a:hover {
@@ -3961,7 +4020,7 @@ textarea:-moz-placeholder {
       margin-right: 18px; }
       .my-account-section .woocommerce .entry-content .form-button label:first-child span {
         position: absolute;
-        right: 35px;
+        right: 15px;
         top: 50%;
         transform: translateY(-50%);
         -moz-transform: translateY(-50%);

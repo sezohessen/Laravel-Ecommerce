@@ -4,7 +4,7 @@
 	<!-- Basic Page Needs
 	================================================== -->
 	<meta charset="utf-8">
-	<title>Homepages 1</title>
+	<title>{{ $title }}</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<!-- Mobile Specific Metas
@@ -80,179 +80,57 @@
                                                 </a>
                                             </li>
                                         @endforeach
+                                        <li>
+                                            <a href="{{ route('shop') }}">More</a>
+                                        </li>
 									</ul>
 								</li>
 								<li class="menu-item mega-menu">
-									<a href="shop-full-width.html">
-									SHOP
+									<a href="{{route('shop.cart')}}">
+									Cart
 									</a>
-									<ul class="sub-menu">
-										<li class="sub-menu-item">
-											<ul class="one">
-												<li class="title">
-													SHOP TYPES
-												</li>
-												<li><a href="shop-full-width.html">Shop Full Width</a></li>
-												<li><a href="shop-right-width-siderbar.html">Shop Right Width Sidebar</a></li>
-												<li><a href="shop-left-width-siderbar.html">Shop Left Width Sidebar</a></li>
-												<li><a href="shop-single-v1.html">Shop Single_v1</a></li>
-												<li><a href="shop-single-v2.html">Shop Single_v2</a></li>
-											</ul>
-										</li>
-										<li class="sub-menu-item">
-											<ul class="second">
-												<li class="title">
-													SHOP PAGES
-												</li>
-												<li><a href="shop-cart.html">Shop Cart</a></li>
-												<li><a href="wish-list.html">Wish List</a></li>
-												<li><a href="check-out.html">Check Out</a></li>
-												<li><a href="my-account.html">My Account</a></li>
-												<li><a href="order-tracking.html">Order Tracking</a></li>
-											</ul>
-										</li>
-										<li class="sub-menu-item sub-menu-item-1">
-											<figure>
-												<img src="{{asset('images/header-shop-images.png')}}" alt="shop">
-											</figure>
-										</li>
-									</ul>
+                                </li>
+                                <li class="menu-item">
+									<a href="{{ route('cart.tracking') }}">
+									Wish list
+									</a>
 								</li>
 								<li class="menu-item">
-									<a href="blog-masonry.html">
-									BLOG
+									<a href="{{ route('cart.tracking') }}">
+									Order tracking
 									</a>
-									<ul class="sub-menu">
-										<li><a href="blog-masonry.html">Blog Masonry</a></li>
-										<li>
-											<a href="right-sidebar.html">
-												Blog Standard
-												<i class="zmdi zmdi-chevron-right"></i>
-											</a>
-											<ul class="sub-menu menu-levels">
-												<li><a href="right-sidebar.html">Right Sidebar</a></li>
-												<li><a href="left-sidebar.html">Left Sidebar</a></li>
-												<li><a href="no-sidebar.html">No Sidebar</a></li>
-											</ul>
-										</li>
-										<li>
-											<a href="standard-post.html">
-												Post Types
-												<i class="zmdi zmdi-chevron-right"></i>
-											</a>
-											<ul class="sub-menu menu-levels">
-												<li><a href="standard-post.html">Standard Post</a></li>
-												<li><a href="gallery-post.html">Gallery Post</a></li>
-												<li><a href="link-post.html">Link Post</a></li>
-												<li><a href="quote-post.html">Quote Post</a></li>
-												<li><a href="video-post.html">Video Post</a></li>
-												<li><a href="audio-post.html">Audio Post</a></li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-								<li class="menu-item">
-									<a href="standard-grid.html">
-									PORTFOLIO
-									</a>
-									<ul class="sub-menu">
-										<li>
-											<a href="standard-grid.html">
-												Standard List
-												<i class="zmdi zmdi-chevron-right"></i>
-											</a>
-											<ul class="sub-menu menu-levels">
-												<li><a href="standard-grid.html">Standard Gird</a></li>
-												<li><a href="standard-wide.html">Standard Wide</a></li>
-											</ul>
-										</li>
-										<li>
-											<a href="gallery-grid.html">
-												Gallery List
-												<i class="zmdi zmdi-chevron-right"></i>
-											</a>
-											<ul class="sub-menu menu-levels">
-												<li><a href="gallery-grid.html">Gallery Gird</a></li>
-												<li><a href="gallery-wide.html">Gallery Wide</a></li>
-											</ul>
-										</li>
-										<li>
-											<a href="masonry-grid.html">
-												Masonry List
-												<i class="zmdi zmdi-chevron-right"></i>
-											</a>
-											<ul class="sub-menu menu-levels">
-												<li><a href="masonry-grid.html">Masonry Gird</a></li>
-												<li><a href="masonry-wide.html">Masonry Wide</a></li>
-											</ul>
-										</li>
-										<li>
-											<a href="two-columns-grid.html">
-												Layouts
-												<i class="zmdi zmdi-chevron-right"></i>
-											</a>
-											<ul class="sub-menu menu-levels">
-												<li><a href="two-columns-grid.html">Two Columns Grid</a></li>
-												<li><a href="three-columns-grid.html">Three Columns Grid</a></li>
-												<li><a href="three-columns-wide.html">Three Columns Wide</a></li>
-												<li><a href="four-columns-grid.html">Four Columns Grid</a></li>
-												<li><a href="four-columns-wide.html">Four Columns Wide</a></li>
-												<li><a href="five-columns-wide.html">Five Columns Wide</a></li>
-											</ul>
-										</li>
-										<li>
-											<a href="small-images.html">
-												Single Types
-												<i class="zmdi zmdi-chevron-right"></i>
-											</a>
-											<ul class="sub-menu menu-levels">
-												<li><a href="small-images.html">Small Images</a></li>
-												<li><a href="big-images.html">Big Images</a></li>
-												<li><a href="small-slider.html">Small Slider</a></li>
-												<li><a href="big-slider.html">Big Slider</a></li>
-												<li><a href="small-gallery.html">Small Gallery</a></li>
-												<li><a href="big-gallery.html">Big Gallery</a></li>
-												<li><a href="small-masonry.html">Small Masonry</a></li>
-												<li><a href="big-masonry.html">Big Masonry</a></li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-								<li class="menu-item mega-menu mega-menu-1">
-									<a href="product-categories.html">
-									ELEMENTS
-									</a>
-									<ul class="sub-menu">
-										<li class="sub-menu-item">
-											<ul>
-												<li class="title">
-													SHOP / PRODUCTS
-												</li>
-												<li><a href="product-categories.html">Product Categories</a></li>
-												<li><a href="standard-list.html">Standard List</a></li>
-												<li><a href="product-widget.html">Product Widget</a></li>
-												<li><a href="masonry-list.html">Masonry List</a></li>
-												<li><a href="product-showcase.html">Product Showcase</a></li>
-											</ul>
-										</li>
-										<li class="sub-menu-item">
-											<ul class="second">
-												<li class="title">
-													THEMING
-												</li>
-												<li><a href="banner.html">Banner</a></li>
-												<li><a href="our-team.html">Our Team</a></li>
-												<li><a href="testimonial.html">Testimonial</a></li>
-												<li><a href="countdown-timer.html">Countdown Timer</a></li>
-												<li><a href="mailchimp-form.html">Mailchimp Form</a></li>
-											</ul>
-										</li>
-										<li class="sub-menu-item sub-menu-item-1">
-											<figure>
-												<img src="{{asset('images/header-elements-images.png')}}" alt="elements">
-											</figure>
-										</li>
-									</ul>
+                                </li>
+                                <li class="menu-item">
+                                    @if (Auth::user())
+                                        <i class="fas fa-angle-down"></i>
+                                        <a href="{{route('shop')}}" >
+                                            {{ Auth::user()->name }}
+                                        </a>
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a href="#">My Orders</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('profile.edit') }}">Account Settings</a>
+                                            </li>
+                                            <li>
+                                                <form action="{{ route('logout') }}" method="POST">
+                                                    @csrf
+                                                    <a href="{{ route('logout') }}"><button type="submit" class="btn logout">logout</button></a>
+                                                </form>
+
+                                            </li>
+                                        </ul>
+                                    @else
+                                        <p>Hello. Login <i class="fa fa-arrow-bottom"></i></p>
+                                        <ul class="sub-menu user">
+                                           <li style="padding:0px 7px;">
+                                            <button class="login btn btn-xs btn-primary "><a href="{{route('login')}}">Login</a></button>
+                                            <p>Don't have account ?</p>
+                                            <a href="{{ route('register') }}">Sign Up</a>
+                                           </li>
+                                        </ul>
+                                    @endif
 								</li>
 							</ul>
 						</nav>

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class Admin
 {
@@ -14,13 +15,16 @@ class Admin
      * @return mixed
      */
     public function handle($request, Closure $next)
-    {   
+    {
         $user = auth()->user();
-
-        if($user->admin == 1) {
-            return $next($request);
-        }else {
-            return abort(404);
+        if(Auth::user()){
+            if($user->admin == 1) {
+                return $next($request);
+            }else {
+                return redirect()->route('Ecommerce');
+            }
+        }else{
+            return redirect()->route('login');
         }
     }
 }

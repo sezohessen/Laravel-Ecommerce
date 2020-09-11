@@ -35,7 +35,8 @@ class CartController extends Controller
     public function index()
     {
         $categories = $this->categories;
-        return view('users.carts.index',compact('categories'));
+        $title      = 'Novas | cart';
+        return view('users.carts.index',compact('title','categories'));
     }
 
     /**
@@ -155,16 +156,15 @@ class CartController extends Controller
     }
     public function checkOut(Request $request)
     {
-
+        $title      = 'Novas | Checkout';
         if(!Auth::user()){
             return redirect()->route('login');
         }else{
             if(!session('cart')){
-                session()->flash('not_available', 'Sorry product not available');
                 return redirect()->back();
             }
             $categories = $this->categories;
-            return view('users.carts.check-out',compact('categories'));
+            return view('users.carts.check-out',compact('title','categories'));
         }
     }
     public function placeOrder(Request $request)
@@ -212,7 +212,8 @@ class CartController extends Controller
             }
             /*Add order */
             $request->session()->forget('cart');//Clear seasion
-            return view('users.carts.thanks',compact('order','categories'));
+            $title      = 'Novas | Orderd';
+            return view('users.carts.thanks',compact('title','order','categories'));
         }else{
             session()->flash('not_available', 'Sorry product not available');
             return redirect()->route('shop.cart');
@@ -221,10 +222,11 @@ class CartController extends Controller
     }
     public function trackOrder()
     {
+        $title      = 'Novas | Tracking';
         $categories = $this->categories;
         $orders         = Order::where('user_id',Auth::user()->id)
         ->orderBy('created_at', 'desc')
         ->get();
-        return view('users.carts.tracking',compact('orders','categories'));
+        return view('users.carts.tracking',compact('title','orders','categories'));
     }
 }

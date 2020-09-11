@@ -25,6 +25,7 @@ class HomeController extends Controller
     }
 
 	public function index() {
+        $title = 'Novas';
         $first_Slider       = Category::active()
         ->orderBy('created_at','desc')
         ->first();
@@ -51,11 +52,12 @@ class HomeController extends Controller
         ->orderBy('created_at', 'desc')
         ->take(8)
         ->get();
-        return view('users.main',compact('users','categories','products','first_Slider','second_Slider'
+        return view('users.main',compact('title','users','categories','products','first_Slider','second_Slider'
     ,'third_Slider'));
     }
     public function shop(Request $Request)
     {
+        $title = 'Novas | Shop';
         //dd($Request);
         //Can not passing  $Request->order in orderBy
         //Like orderBy('new_price',$Request->order)  --->> vulnerable SQL Injection
@@ -110,12 +112,14 @@ class HomeController extends Controller
             return $query->where('active', 1);
         })
         ->get();
-        return view('users.categories.show',compact('categories','products','product_picture','all_product',
+        return view('users.categories.show',compact('title','categories','products','product_picture','all_product',
         ));
     }
     public function SpecificCateg(Request $Request,$id, $slug)
     {
+
         $category       = Category::find($id);//If no matching model exist, it returns null.
+        $title = 'Novas | '.$category->name;
         if($category==NULL){
             return view('users.notfound');
         }
@@ -154,7 +158,7 @@ class HomeController extends Controller
         $category_info      = Category::where('id',$id)
         ->get()
         ->first();
-        return view('users.categories.show',compact('categories','products','product_picture','all_product',
+        return view('users.categories.show',compact('title','categories','products','product_picture','all_product',
         'category_info'));
     }
     public function product($id,$slug)

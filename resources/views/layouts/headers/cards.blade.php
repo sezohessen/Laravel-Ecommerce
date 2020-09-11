@@ -83,10 +83,24 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Orders</h5>
-                                    <a href="{{ route('orders',['status'=>'pending']) }}">Pending :<strong>{{ $pending->count() }}</strong></a>|
-                                    <a href="{{ route('orders',['status'=>'shipped']) }}">Shipped :<strong>{{ $shipped->count() }}</strong> </a>|
-                                    <a href="{{ route('orders',['status'=>'delivered']) }}">Delivered :<strong>{{ $deliverd->count() }}</strong> </a>|
-                                    <a href="{{ route('orders',['status'=>'canceled']) }}">canceled :<strong>{{ $canceled->count() }}</strong> </a>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a href="{{ route('orders',['status'=>'pending']) }}" style="display:block">
+                                                Pending :<strong>{{ $pending->count() }}</strong>
+                                            </a>
+                                            <a href="{{ route('orders',['status'=>'shipped']) }}" style="display:block">
+                                                Shipped :<strong>{{ $shipped->count() }}</strong>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="{{ route('orders',['status'=>'delivered']) }}" style="display:block">
+                                                Delivered :<strong>{{ $deliverd->count() }}</strong>
+                                            </a>
+                                            <a href="{{ route('orders',['status'=>'canceled']) }}" style="display:block">
+                                                canceled :<strong>{{ $canceled->count() }}</strong>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-dark text-white rounded-circle shadow">

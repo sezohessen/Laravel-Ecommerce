@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\PasswordRequest;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +18,15 @@ class ProfileController extends Controller
      */
     public function edit()
     {
-        return view('admin.profile.edit');
+        $title = 'Novas | My Profile';
+        $categories = Category::active()
+        ->orderBy('created_at', 'desc')
+        ->whereHas('products', function ($query) {
+            return $query->where('active', 1);
+        })
+        ->take(6)
+        ->get();
+        return view('admin.profile.edit',compact('title','categories'));
     }
 
     /**

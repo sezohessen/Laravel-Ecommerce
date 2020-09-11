@@ -32,7 +32,7 @@ Route::get('main/shop/cart/remove/{id}', 'CartController@remove')->name('cart.re
 Route::post('main/shop/cart/update/{id}', 'CartController@update')->name('cart.update');
 // Admin Routes
 
-Route::group(['middleware' => ['auth', 'admin'] ], function () {
+Route::group(['middleware' => 'admin' ], function () {
 
 	Route::get('admin', function() {
 		return redirect('admin/dashboard');
@@ -44,11 +44,11 @@ Route::group(['middleware' => ['auth', 'admin'] ], function () {
 
 	Route::resource('admin/users', 'Admin\UserController', ['except' => ['show']]);
 
-	Route::get('admin/profile', ['as' => 'profile.edit', 'uses' => 'Admin\ProfileController@edit']);
+	Route::get('main/profile', ['as' => 'profile.edit', 'uses' => 'Admin\ProfileController@edit']);
 
-	Route::put('admin/profile', ['as' => 'profile.update', 'uses' => 'Admin\ProfileController@update']);
+	Route::put('main/profile', ['as' => 'profile.update', 'uses' => 'Admin\ProfileController@update']);
 
-	Route::put('admin/profile/password', ['as' => 'profile.password', 'uses' => 'Admin\ProfileController@password']);
+	Route::put('main/profile/password', ['as' => 'profile.password', 'uses' => 'Admin\ProfileController@password']);
 	/* Category Controller */
 	Route::get('admin/categries', 'CategoryController@index')->name('categories');
 	Route::get('admin/categries/create', 'CategoryController@create')->name('categories.create');
@@ -79,7 +79,12 @@ Route::group(['middleware' => ['auth', 'admin'] ], function () {
     Route::post('admin/orders/delivered/{id}', 'OrderController@delivered')->name('order.delivered');
     Route::get('admin/orders/canceled/{id}', 'OrderController@canceled')->name('order.canceled');
     Route::post('admin/orders/delete/{id}', 'OrderController@destroy')->name('order.delete');
-
+    /* Website */
+    Route::get('main/shop/check-out', 'CartController@checkOut')->name('cart.checkOut');
+    Route::post('main/shop/check-out/placeOrder', 'CartController@placeOrder')->name('cart.placeOrder');
+    Route::get('main/shop/trackOrder', 'CartController@trackOrder')->name('cart.tracking');
+});
+Route::group(['middleware' => 'auth' ], function () {
     /* Website */
     Route::get('main/shop/check-out', 'CartController@checkOut')->name('cart.checkOut');
     Route::post('main/shop/check-out/placeOrder', 'CartController@placeOrder')->name('cart.placeOrder');

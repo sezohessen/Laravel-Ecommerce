@@ -46,7 +46,7 @@
                                 @foreach ($products as $product)
                                     <tr>
                                         <td>
-                                            <img src="{{asset('uploads/products/'.$product->pictures[0]->picture)}}" alt="{{$product->pictures[0]->picture}}" class="img-fluid img-thumbnail" width="100px" height="100px">
+                                            <img src="{{asset('uploads/products/'.$product->pictures->first()->picture)}}" alt="{{$product->name}}" class="img-fluid img-thumbnail" width="100px" height="100px">
                                         </td>
                                         <td>
                                             <p>{{$product->name}}</p>
